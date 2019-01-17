@@ -1,0 +1,83 @@
+
+
+/*轮播的样式*/
+#carousel-qhkt {
+    margin-top: -20px;
+}
+
+.carousel-inner > div.item {
+    /*指定背景图片水平垂直居中*/
+    background-position: center center !important;
+    /*cover如果遇到小图，则按照图片短边放大到容器的短边，contain为以长边拉长*/
+    background-size: cover !important;
+}
+
+/*媒体查询*/
+@media (min-width: 769px) {
+    .carousel-inner > div.item {
+        height: 410px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-inner > div.item {
+        height: auto;
+    }
+}
+
+/*将课程列表下的横线增粗*/
+.page-header {
+    border-bottom: 4px #ddd solid;
+}
+
+/*将“全部课程放到右侧”*/
+#carouseList > .page-header > h3 {
+    position: relative;
+}
+
+#carouseList > .page-header > h3 > a {
+    position: absolute;
+    right: 0px;
+    color: #666;
+    font-weight: 100;
+    font-size: 16px;
+    line-height: 26.4px;
+}
+
+#carouseList > .page-header > h3 > a:hover {
+    text-decoration: none; /*去除全部课程鼠标指上去显示下划线*/
+}
+
+/*调课程的课程描述的h3显示*/
+.thumbnail{
+    border: 1px #fff solid;
+    padding: 10px;
+    border-radius: 0;
+}
+
+.thumbnail:hover{
+    box-shadow: .5px .5px 1px #ddd;
+    border: 1px #ccc solid;
+    outline: 1px #ddd solid;
+}
+
+.thumbnail > .caption > h3{
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.thumbnail > .caption > h3 > a{
+    color: #333;
+}
+
+.thumbnail > .caption > h3.course_price{
+    position: relative;
+    margin-top: 20px;
+    color: red;
+}
+
+.thumbnail > .caption > h3 > .course_group{
+    position: absolute;
+    right: 0;
+}
+

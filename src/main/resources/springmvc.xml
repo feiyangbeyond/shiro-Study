@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 配置springmvc最基本的组件的扫描注解范围 ,只扫描两个注解 -->
+	<context:component-scan
+		base-package="com.beisi.shiro" use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+
+	<!-- 为springmvc的默认的视图解析器配置前后缀 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<mvc:annotation-driven /> <!-- 一个综合的注解，帮助注入到ioc容器的多种bean -->
+
+	<!-- 对静态资源的处理的注解,依赖于上面那个配置 -->
+	<mvc:default-servlet-handler />
+
+	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/admin/**"/> 
+		<bean class="com.beisi.shiro.web.AuthIncepertor"></bean> </mvc:interceptor> 
+		</mvc:interceptors> -->
+
+<!-- 
+	 开启shiro的注解，能够在spring的组件中使用shiro的自身注解，一般放在controller类里边，所以必须要配置在springmvc中 
+	<bean id="lifecycleBeanPostProcessor"
+		class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor" />
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	 -->
+
+</beans>

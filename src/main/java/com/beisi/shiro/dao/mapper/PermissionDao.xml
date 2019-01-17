@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beisi.shiro.dao.PermissionDao">
+	
+	<select id="getPermission" resultType="String">
+		select p.pname from 
+			t_user u,t_role r,t_user_role ur,t_role_permission rp,t_permission p
+		where 
+			u.id=ur.uid and ur.rid=r.id and r.id=rp.rid and rp.pid=p.id
+		and 
+			u.id=#{uid}
+	</select>
+	
+	<select id="getAllPermissions" resultType="com.beisi.shiro.model.Permission">
+		select * from t_permission
+	</select>
+
+</mapper>
