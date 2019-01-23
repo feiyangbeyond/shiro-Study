@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ehcache>   
-    <diskStore path="d:/ehcache/"/>     
-    <defaultCache     
-            maxElementsInMemory="10000"    
-            eternal="false"    
+	<!-- 当二级缓存的对象超过内存限制时(缓存对象个数大于maxElementsInMemory)，存入磁盘文件地址 -->
+    <diskStore path="d:/ehcache/"/> 
+    <!-- 
+    	maxElementsInMemory设置在内存中缓存对象的个数
+    	maxElementsOnDisk设置在硬盘中缓存对象的个数
+    	eternal设置缓存是否永远不过期
+    	overflowToDisk当内存中超过最大数量时，是否往硬盘中存放
+    	timeToIdleSeconds两次访问在120秒内，缓存则有效，若两次建个大于120秒，则失效
+    	timeToLiveSeconds一个缓存对象最多存放的时间（生命周期）
+    	diskExpiryThreadIntervalSeconds每隔120毫秒通过一个线程，清理磁盘中的缓存
+    	memoryStoreEvictionPolicy当缓存对象大于最大值，处理策略“LUR”处理掉最近最少使用的“FIFO”先进先出“LFU”最不常用的先删除
+     -->    
+    <defaultCache 	   
+            maxElementsInMemory="1000"  
+            maxElementsOnDisk="1000000"
+            eternal="false"
+            overflowToDisk="true"     
+            diskPersistent="false"     
             timeToIdleSeconds="120"    
-            timeToLiveSeconds="120"    
-            overflowToDisk="true"    
-            maxElementsOnDisk="10000000"    
-            diskPersistent="false"    
+            timeToLiveSeconds="120"
             diskExpiryThreadIntervalSeconds="120"    
             memoryStoreEvictionPolicy="LRU"/>     
 </ehcache>
