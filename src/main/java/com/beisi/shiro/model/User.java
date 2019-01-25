@@ -3,6 +3,8 @@ package com.beisi.shiro.model;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class User { // User的名称必须和数据表里的表名称t_user
 	private Integer id;// 出了名字对应以为，坑：int，id，id将获取不到值,整数类型不能用int，要用Integer
 	private String username;
@@ -10,6 +12,7 @@ public class User { // User的名称必须和数据表里的表名称t_user
 	private String email;
 	private String phone;
 	private Integer enable;// 0未激活，1激活
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date addDate;// 创建日期
 	private List<Role> roles; // 角色信息
 
