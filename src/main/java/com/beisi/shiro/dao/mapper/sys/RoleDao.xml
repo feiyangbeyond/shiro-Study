@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.beisi.shiro.dao.RoleDao">
+  <mapper namespace="com.beisi.shiro.dao.sys.RoleDao">
   	
   	
 	<select id="getRolesByUid" resultType="String">
@@ -11,7 +11,7 @@
 		and u.id = #{uid}
 	</select>
 	
-	<select id="getRolesObjByUid" resultType="com.beisi.shiro.model.Role">
+	<select id="getRolesObjByUid" resultType="com.beisi.shiro.model.sys.Role">
 		select r.id,r.rname,r.rcode from t_user u,t_role r,t_user_role ur 
 		where u.id=ur.uid and ur.rid=r.id
 		and u.id = #{uid}

@@ -17,11 +17,10 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.beisi.shiro.dao.PermissionDao;
-import com.beisi.shiro.dao.RoleDao;
-import com.beisi.shiro.dao.UserDao;
-import com.beisi.shiro.model.Role;
-import com.beisi.shiro.model.User;
+import com.beisi.shiro.dao.sys.PermissionDao;
+import com.beisi.shiro.dao.sys.RoleDao;
+import com.beisi.shiro.dao.sys.UserDao;
+import com.beisi.shiro.model.sys.User;
 
 public class ShiroRealm
 		/* implements Realm */ extends AuthorizingRealm/* AuthorizingRealm做登录和权限认证，AuthenticatingRealm只做登录认证 */ {

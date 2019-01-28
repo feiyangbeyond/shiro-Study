@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.beisi.shiro.dao.BaseDao">
+<mapper namespace="com.beisi.shiro.dao.sys.BaseDao">
 
 	<!-- 按id查找一个 -->
 	<select id="select" resultType="map">

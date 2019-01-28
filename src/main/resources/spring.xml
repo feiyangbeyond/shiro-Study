@@ -109,7 +109,7 @@
 	<!-- 配置事务的切入点 -->
 	<aop:config>
 		<aop:pointcut
-			expression="execution(* com.beisi.shiro.service.impl.*.*(..))"
+			expression="execution(* com.beisi.shiro.service.*.impl.*.*(..))"
 			id="txPointcut" />
 		<aop:advisor advice-ref="txAdvice"
 			pointcut-ref="txPointcut" />
@@ -122,7 +122,7 @@
 		<property name="configLocation"
 			value="classpath:mybatis-config.xml"></property>
 		<property name="mapperLocations"
-			value="classpath:com/beisi/shiro/dao/mapper/*.xml"></property>
+			value="classpath:com/beisi/shiro/dao/mapper/**/*.xml"></property>
 	</bean>
 	<!-- mybatis接口扫描 -->
 	<mybatis-spring:scan

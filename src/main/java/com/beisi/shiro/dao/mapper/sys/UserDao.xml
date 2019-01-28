@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.beisi.shiro.dao.UserDao">
+<mapper namespace="com.beisi.shiro.dao.sys.UserDao">
 
 	<select id="getUserByName"
-		resultType="com.beisi.shiro.model.User">
+		resultType="com.beisi.shiro.model.sys.User">
 		select * from t_user as u where u.username = #{username}
 	</select>
 
@@ -17,7 +17,7 @@
 	</select>
 
 	<select id="getRoleByUid"
-		resultType="com.beisi.shiro.model.Role">
+		resultType="com.beisi.shiro.model.sys.Role">
 		SELECT
 		r.id,r.`name`,r.code
 		FROM
@@ -28,7 +28,7 @@
 		AND ur.uid=#{id}
 	</select>
 
-	<resultMap type="com.beisi.shiro.model.User"
+	<resultMap type="com.beisi.shiro.model.sys.User"
 		id="UserRoleMap">
 		<id column="id" property="id" />
 		<result column="username" property="username" />
@@ -36,7 +36,7 @@
 		<result column="phone" property="phone" />
 		<result column="enable" property="enable" />
 		<collection property="roles"
-			select="com.beisi.shiro.dao.UserDao.getRoleByUid" column="id">
+			select="com.beisi.shiro.dao.sys.UserDao.getRoleByUid" column="id">
 		</collection>
 	</resultMap>
 
@@ -81,7 +81,7 @@
 		(u.username=#{userInfo} OR u.phone=#{userInfo} OR u.email=#{userInfo})
 	</select>
 
-	<resultMap type="com.beisi.shiro.model.User"
+	<resultMap type="com.beisi.shiro.model.sys.User"
 		id="UserRelRoleRelResMap">
 		<id column="id" property="id" />
 		<result column="username" property="username" />
@@ -89,11 +89,11 @@
 		<result column="email" property="email" />
 		<result column="phone" property="phone" />
 		<result column="enable" property="enable" />
-		<collection property="roles" ofType="com.beisi.shiro.model.Role">
+		<collection property="roles" ofType="com.beisi.shiro.model.sys.Role">
 			<id column="rid" property="id" />
 			<result column="name" property="name" />
 			<result column="code" property="code" />
-			<collection property="resources" ofType="com.beisi.shiro.model.Resource">
+			<collection property="resources" ofType="com.beisi.shiro.model.sys.Resource">
 				<id column="resid" property="id" />
 				<result column="path" property="path" />
 			</collection>

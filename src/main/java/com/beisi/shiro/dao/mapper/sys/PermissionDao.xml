@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.beisi.shiro.dao.PermissionDao">
+<mapper namespace="com.beisi.shiro.dao.sys.PermissionDao">
 	
 	<select id="getPermission" resultType="String">
 		select p.pname from 
@@ -13,7 +13,7 @@
 			u.id=#{uid}
 	</select>
 	
-	<select id="getAllPermissions" resultType="com.beisi.shiro.model.Permission">
+	<select id="getAllPermissions" resultType="com.beisi.shiro.model.sys.Permission">
 		select * from t_permission
 	</select>
 

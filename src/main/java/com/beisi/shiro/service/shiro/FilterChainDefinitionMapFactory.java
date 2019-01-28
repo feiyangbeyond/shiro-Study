@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.beisi.shiro.dao.PermissionDao;
-import com.beisi.shiro.model.Permission;
+import com.beisi.shiro.dao.sys.PermissionDao;
+import com.beisi.shiro.model.sys.Permission;
 
 public class FilterChainDefinitionMapFactory {
 	@Autowired
