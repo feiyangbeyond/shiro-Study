@@ -14,7 +14,7 @@
 	</select>
 	
 	<select id="getAllPermissions" resultType="com.beisi.shiro.model.sys.Permission">
-		select * from t_permission
+		select * from t_permission order by sortNum
 	</select>
 
 </mapper>
