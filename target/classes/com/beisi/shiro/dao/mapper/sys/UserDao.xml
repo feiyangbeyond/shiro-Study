@@ -16,18 +16,6 @@
 		t_user AS u
 	</select>
 
-	<select id="getRoleByUid"
-		resultType="com.beisi.shiro.model.sys.Role">
-		SELECT
-		r.id,r.`name`,r.code
-		FROM
-		t_role AS r,
-		t_user_role AS ur
-		WHERE
-		ur.rid = r.id
-		AND ur.uid=#{id}
-	</select>
-
 	<resultMap type="com.beisi.shiro.model.sys.User"
 		id="UserRoleMap">
 		<id column="id" property="id" />
@@ -36,20 +24,11 @@
 		<result column="phone" property="phone" />
 		<result column="enable" property="enable" />
 		<collection property="roles"
-			select="com.beisi.shiro.dao.sys.UserDao.getRoleByUid" column="id">
+			select="com.beisi.shiro.dao.sys.RoleDao.getRoleByUid" column="id">
 		</collection>
 	</resultMap>
 
-	<!-- <select id="selectRelevanceUser" resultMap="UserRoleMap"> SELECT u.id,u.username,u.`password`,u.email,u.phone,u.`enable`, 
-		r.id as rid,r.`name` as rname FROM t_user AS u, t_role AS r, t_user_role 
-		AS ur WHERE ur.uid = u.id AND ur.rid = r.id </select> <resultMap type="com.beisi.shiro.model.User" 
-		id="UserRoleMap"> <id column="id" property="id" /> <result column="username" 
-		property="username"/> <result column="email" property="email"/> <result column="phone" 
-		property="phone"/> <result column="enable" property="enable"/> <collection 
-		property="roles" ofType="com.beisi.shiro.model.Role"> <id column="rid" property="id"/> 
-		<result column="rname" property="name"/> </collection> </resultMap> 这样写，会导致分页插件查询出现问题 -->
-
-	<select id="getUserByUid" resultMap="UserRoleMap">
+	<!-- <select id="getUserByUid" resultMap="UserRoleMap">
 		SELECT
 		u.id,u.username,u.`password`,u.email,u.phone,u.`enable`
 		FROM
@@ -93,11 +72,11 @@
 			<id column="rid" property="id" />
 			<result column="name" property="name" />
 			<result column="code" property="code" />
-			<collection property="resources" ofType="com.beisi.shiro.model.sys.Resource">
+			<collection property="resources" ofType="com.beisi.shiro.model.sys.Permission">
 				<id column="resid" property="id" />
 				<result column="path" property="path" />
 			</collection>
 		</collection>
-	</resultMap>
+	</resultMap> -->
 
 </mapper>

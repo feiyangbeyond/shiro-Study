@@ -23,9 +23,9 @@ public class FilterChainDefinitionMapFactory {
 		for(Permission permission : permissions) {
 			if(permission.getPname().contains("p:")) {//如果存在，则构造成perms[userlist]样子
 				String p = permission.getPname().replaceAll("p:","");//删除前缀
-				permsMap.put(permission.getUrl(), "perms["+p+"]");
+				permsMap.put(permission.getPathUrl(), "perms["+p+"]");
 			}else {
-				permsMap.put(permission.getUrl(),permission.getPname());
+				permsMap.put(permission.getPathUrl(),permission.getPname());
 			}
 		}
 

@@ -4,14 +4,26 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.beisi.shiro.dao.sys.RoleDao">
   	
-  	
-	<select id="getRolesByUid" resultType="String">
-		select r.rcode from t_user u,t_role r,t_user_role ur 
-		where u.id=ur.uid and ur.rid=r.id
+
+	<select id="getRoleByUid" parameterType="String" resultMap="RolePermissionMap">
+		select r.id,r.rname,r.rcode from t_user u,t_role r,t_user_role ur 
+		where u.id=ur.userId and ur.roleId = r.id
 		and u.id = #{uid}
 	</select>
 	
-	<select id="getRolesObjByUid" resultType="com.beisi.shiro.model.sys.Role">
+	<resultMap type="com.beisi.shiro.model.sys.Role"
+		id="RolePermissionMap">
+		<id column="id" property="id" />
+		<result column="rname" property="rname" />
+		<result column="rcode" property="rcode" />
+		<result column="add_date" property="addDate" />
+		<result column="up_date" property="upDate" />
+		<collection property="permission"
+			select="com.beisi.shiro.dao.sys.PermissionDao.getPermissionByid" column="id">
+		</collection>
+	</resultMap>
+	
+	<select id="getRolesObjByUid" parameterType="String" resultType="com.beisi.shiro.model.sys.Role">
 		select r.id,r.rname,r.rcode from t_user u,t_role r,t_user_role ur 
 		where u.id=ur.uid and ur.rid=r.id
 		and u.id = #{uid}

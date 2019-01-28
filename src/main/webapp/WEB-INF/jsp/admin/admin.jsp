@@ -33,7 +33,7 @@
 				<div class="col-md-8 col-md-offset-8 login_info text-right">
 					<i class="iconfont icon-character"></i> admin <i
 						class="iconfont icon-rili1"></i> 2018-12-13 <a class="pull-right"
-						href="#"><i class="iconfont icon-dianyuan"></i></a>
+						href="${pageContext.request.contextPath}/logout.html"><i class="iconfont icon-dianyuan"></i></a>
 				</div>
 			</div>
 		</div>

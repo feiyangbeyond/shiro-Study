@@ -4,17 +4,19 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.beisi.shiro.dao.sys.PermissionDao">
 	
-	<select id="getPermission" resultType="String">
-		select p.pname from 
-			t_user u,t_role r,t_user_role ur,t_role_permission rp,t_permission p
+	<select id="getPermissionByid" resultType="com.beisi.shiro.model.sys.Permission">
+		select p.id,p.pname,p.pathUrl,p.sortNum,p.add_date,p.up_date from 
+			t_role r,t_role_permission rp,t_permission p
 		where 
-			u.id=ur.uid and ur.rid=r.id and r.id=rp.rid and rp.pid=p.id
+			r.id=rp.roleId and rp.perId=p.id
 		and 
-			u.id=#{uid}
+			r.id=#{rid}
 	</select>
 	
 	<select id="getAllPermissions" resultType="com.beisi.shiro.model.sys.Permission">
 		select * from t_permission order by sortNum
 	</select>
+	
+	
 
 </mapper>

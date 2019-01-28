@@ -39,9 +39,6 @@ public interface UserService extends BaseService<User>{
 
 	void batchDelUsersByIds(Integer[] uidArr);
 
-	PageInfo<User> selectUsersBySearchPage(int pageNum, int pageSize,String userInfo);
-
-	User login(String userInfo, String password);
-	
+	PageInfo<User> selectUsersBySearchPage(int pageNum, int pageSize,String userInfo);	
 	
 }

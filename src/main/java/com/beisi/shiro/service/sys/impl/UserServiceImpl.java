@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.beisi.shiro.dao.sys.BaseDao;
 import com.beisi.shiro.dao.sys.UserDao;
-import com.beisi.shiro.dao.sys.UserRoleDao;
 import com.beisi.shiro.model.sys.User;
 import com.beisi.shiro.service.sys.UserService;
 import com.github.pagehelper.Page;
@@ -23,8 +22,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Autowired
 	private UserDao userDao;
 
-	@Autowired
-	private UserRoleDao userRoleDao;
 
 	@Override
 	public BaseDao getBaseDao() {
@@ -42,7 +39,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		// 添加用户与角色关联表
 		for (Integer rid : roleIds) {
 			// 这里的id也需要使用null占位
-			this.userRoleDao.add("t_user_role", new Object[] { null, u.getId(), rid });
 		}
 	}
 
@@ -76,11 +72,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		this.update(user);
 		// 修改用户的第二部，修改user关联的roles
 		// 1.删除用户id是user.getId()的所有的关联的role
-		userRoleDao.deleteByUid(user.getId());
 		// 2.吧接受到的roleIds这里的新的用户管理的role的id的数组，重新添加到t_user_role关系表中
 		for (Integer rid : roleIds) {
 			// 这里的id也需要使用null占位
-			this.userRoleDao.add("t_user_role", new Object[] { null, user.getId(), rid });
 		}
 
 	}
@@ -88,7 +82,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Override
 	public void deleteByUidRelRole(Integer id) {
 		// 第一步：删除user关联的关系删除
-		this.userRoleDao.deleteByUid(id);
 		// 第二部：删除用户本身
 		this.delete(id);
 	}
@@ -107,19 +100,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		List<User> userDatas = this.userDao.selectUsersBySearchPage("%" + userInfo + "%");
 		PageInfo<User> info = new PageInfo<>(userDatas);
 		return info;
-	}
-
-	@Override
-	public User login(String userInfo, String password) {
-		// userInfo,查询user表里有没有相应记录
-		User user = this.userDao.selectUserByUserInfo(userInfo);
-		if (user == null) {
-			throw new RuntimeException("用户名或密码有误！");
-		}
-		// 有对应的用户的情况下，进一步的验证
-		if (!password.equals(user.getPassword()))
-			throw new RuntimeException("用户名或密码有吴！");
-		return user;
 	}
 
 }

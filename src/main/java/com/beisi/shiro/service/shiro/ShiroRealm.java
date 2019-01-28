@@ -71,7 +71,7 @@ public class ShiroRealm
 //		AuthenticationInfo info = new SimpleAuthenticationInfo(principals, hashedCredentials, credentialsSalt, realmName)
 		AuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), slat, getName());
 		// 剩下密码的对比，shiro框架内部框架来做的
-		System.out.println("在shiro中进行了登录认证");
+//		System.out.println("在shiro中进行了登录认证");
 		return info;
 	}
 

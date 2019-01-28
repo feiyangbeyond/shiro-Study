@@ -43,13 +43,13 @@ public class UserController {
 		// 获取到所有的role对象信息
 		List<Role> allRoles = this.roleService.selectAll();
 		String optStr = "";
-		for (Role role : allRoles) {
-			if (roles.contains(role)) {
-				optStr = optStr + "<option selected value=\"" + role.getId() + "\">" + role.getName() + "</option>\r\n";
-			} else {
-				optStr = optStr + "<option value=\"" + role.getId() + "\">" + role.getName() + "</option>\r\n";
-			}
-		}
+//		for (Role role : allRoles) {
+//			if (roles.contains(role)) {
+//				optStr = optStr + "<option selected value=\"" + role.getId() + "\">" + role.getName() + "</option>\r\n";
+//			} else {
+//				optStr = optStr + "<option value=\"" + role.getId() + "\">" + role.getName() + "</option>\r\n";
+//			}
+//		}
 
 		String path = request.getContextPath();
 		return "<div class=\"modal-header\">\r\n"

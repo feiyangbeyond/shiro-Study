@@ -75,7 +75,7 @@
                                 <input type="password" id="pwd" name="password" class="form-control" placeholder="密码">
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox" name="rememberme">10天内自动登录</label>
+                                <label><input type="checkbox" name="remeberme">10天内自动登录</label>
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="form-control btn btn-primary" value="登录">

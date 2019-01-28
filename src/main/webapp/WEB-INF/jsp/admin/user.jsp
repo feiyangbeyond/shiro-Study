@@ -114,7 +114,7 @@
 							<label>关联的角色：</label> 
 							<select name="roleIds" class="selectpicker form-control" multiple data-live-search="true">
 								<c:forEach items="${allRoles}" var="role">
-									<option value="${role.id}">${role.name}</option>
+									<option value="${role.id}">${role.rname}</option>
 								</c:forEach>
 							</select>
 						</div>
