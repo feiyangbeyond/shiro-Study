@@ -112,8 +112,8 @@
     this.timezone = options.timezone || timeZoneAbbreviation();
 
     this.icons = {
-      leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'iconfont icon-shuminghaoyou' : 'icon-arrow-left'),
-      rightArrow: this.fontAwesome ? 'fa-arrow-right' : (this.bootcssVer === 3 ? 'iconfont icon-shuminghaoyou1' : 'icon-arrow-right')
+      leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'iconfont icon-shuminghaoyou1' : 'icon-arrow-left'),
+      rightArrow: this.fontAwesome ? 'fa-arrow-right' : (this.bootcssVer === 3 ? 'iconfont icon-shuminghaoyou' : 'icon-arrow-right')
     }
     this.icontype = this.fontAwesome ? 'fa' : 'glyphicon';
 

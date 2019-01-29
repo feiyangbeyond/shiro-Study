@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<title>启航课堂首页</title>
+<title>进销系统后台管理首页</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/lib/bootstrap/css/bootstrap.css">
 <!--[if lt IE 9]>
@@ -25,15 +25,15 @@
 <body>
 	<div id="admin_top" class="container-fluid">
 		<div class="row">
-			<div class="navbar navbar-inverse navbar-static-top">
+			<div class="navbar navbar-inverse navbar-static-top navbar-hed">
 				<div class="navbar-header col-md-8">
 					<span class="navbar-brand"><i
-						class="iconfont icon-Windsurfing"></i>启航课堂后台管理页</span>
+						class="iconfont icon-jinxiaocun"></i>进销系统后台管理页</span>
 				</div>
 				<div class="col-md-8 col-md-offset-8 login_info text-right">
-					<i class="iconfont icon-character"></i> admin <i
-						class="iconfont icon-rili1"></i> 2018-12-13 <a class="pull-right"
-						href="${pageContext.request.contextPath}/logout.html"><i class="iconfont icon-dianyuan"></i></a>
+					<i class="iconfont icon-ren"></i> ${username} <i
+						class="iconfont icon-rili"></i> ${nowDate} <a class="pull-right"
+						href="${pageContext.request.contextPath}/logout.html"><i class="iconfont icon-power-bold-01"></i></a>
 				</div>
 			</div>
 		</div>
@@ -50,45 +50,45 @@
 			<ul id="collapse_system" class="collapse collapse_all">
 				<li><a href=""
 					data-iframesrc="${pageContext.request.contextPath}/admin/userManager.html?pageNum=1&pageSize=10"><i
-						class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
+						class="iconfont icon-jian"></i>用户管理</a></li>
 				<li><a href=""
 					data-iframesrc="${pageContext.request.contextPath}/admin/roleManager.html"><i
-						class="iconfont icon-tubiaozhizuo-"></i>角色管理</a></li>
+						class="iconfont icon-jian"></i>角色管理</a></li>
 				<li><a href=""
 					data-iframesrc="${pageContext.request.contextPath}/admin/resManager.html"><i
-						class="iconfont icon-tubiaozhizuo-"></i>资源管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>系统信息管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>系统备份管理</a></li>
+						class="iconfont icon-jian"></i>资源管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>系统信息管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>系统备份管理</a></li>
 			</ul>
 			<a href="#collapse_vedio" data-toggle="collapse"><i
 				class="iconfont icon-jia1"></i>视频管理</a>
 			<ul id="collapse_vedio" class="collapse collapse_all">
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
 			</ul>
 			<a href="#collapse_course" data-toggle="collapse"><i
 				class="iconfont icon-jia1"></i>课程管理</a>
 			<ul id="collapse_course" class="collapse collapse_all">
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
 			</ul>
 			<a href="#collapse_res" data-toggle="collapse"><i
 				class="iconfont icon-jia1"></i>资料管理</a>
 			<ul id="collapse_res" class="collapse collapse_all">
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
-				<li><a href=""><i class="iconfont icon-tubiaozhizuo-"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
+				<li><a href=""><i class="iconfont icon-jian"></i>用户管理</a></li>
 			</ul>
 		</div>
 	</div>

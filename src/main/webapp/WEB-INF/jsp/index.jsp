@@ -26,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="#" class="navbar-brand"><i class="iconfont icon-Windsurfing"></i>启航课堂</a>
+                <a href="#" class="navbar-brand"><i class="iconfont icon-jinxiaocun1"></i>进销系统</a>
             </div>
             <div id="qh_navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
@@ -41,14 +41,14 @@
                         <div class="input-group">
                             <input type="text" name="search_str" class="form-control" placeholder="课程名称..." />
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary"><span class="iconfont icon-fangdajing1"></span></button>
+                                <button type="button" class="btn btn-primary"><span class="iconfont icon-fangdajing"></span></button>
                             </span>
                         </div>
                     </form>
                 </div>
                 <ul id="loginreg" class="nav navbar-nav navbar-right">
-                    <li><a href="${pageContext.request.contextPath}/login.html"><span style="color:#337ab7; font-weight: bolder;" class="iconfont icon-ren111"></span> 登录</a></li>
-                    <li><a href=""><span style="color:#337ab7;"  class="iconfont icon-zhuce2"></span> 注册</a></li>
+                    <li><a href="${pageContext.request.contextPath}/login.html"><span style="color:#337ab7; font-weight: bolder;" class="iconfont icon-denglu1"></span> 登录</a></li>
+                    <li><a href=""><span style="color:#337ab7;"  class="iconfont icon-zhuce"></span> 注册</a></li>
                 </ul>
             </div>
         </div>
@@ -84,7 +84,7 @@
     </div>
     <div id="courseList" class="container">
         <div class="page-header">
-            <h3 class="text-center">最新发布课程<a href="#">全部课程<i class="iconfont icon-dayuhao1"></i></a></h3>
+            <h3 class="text-center">最新发布课程<a href="#">全部课程<i class="iconfont icon-dayuhao"></i></a></h3>
         </div>
         <div class="row">
             <div class="col-sm-12 col-md-6">
@@ -126,7 +126,7 @@
         </div>
 
         <div class="page-header">
-            <h3 class="text-center">JAVASE课程<a href="#">全部课程<i class="iconfont icon-dayuhao1"></i></a></h3>
+            <h3 class="text-center">JAVASE课程<a href="#">全部课程<i class="iconfont icon-dayuhao"></i></a></h3>
         </div>
         <div class="row">
             <div class="col-sm-12 col-md-6">
@@ -168,7 +168,7 @@
         </div>
 
         <div class="page-header">
-            <h3 class="text-center">JAVAEE课程<a href="#">全部课程<i class="iconfont icon-dayuhao1"></i></a></h3>
+            <h3 class="text-center">JAVAEE课程<a href="#">全部课程<i class="iconfont icon-dayuhao"></i></a></h3>
         </div>
         <div class="row">
             <div class="col-sm-12 col-md-6">
@@ -211,9 +211,9 @@
     </div>
 
     <div class="footer hidden-xs">
-        <div class="footericon"><span class="iconfont icon-Windsurfing"></span></div>
+        <div class="footericon"><span class="iconfont icon-kecheng"></span></div>
         <p class="cr">Copyright © 2018 qihangzaixian. All Rights Reserved.</p>
-        <p class="cr">启航在线课程 版权所有 | <a href="#">工具下载</a> | <a href="#">资料下载</a> | <a href="#">视频下载</a> | <a href="#">问题反馈</a> | <a href="#">帮助</a></p>
+        <p class="cr">进销系统 版权所有 | <a href="#">工具下载</a> | <a href="#">资料下载</a> | <a href="#">视频下载</a> | <a href="#">问题反馈</a> | <a href="#">帮助</a></p>
     </div>
     <script src="${pageContext.request.contextPath}/static/lib/jquery/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->

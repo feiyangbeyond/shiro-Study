@@ -23,15 +23,15 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="search_title_bar">收索</div>
+			<div class="search_title_bar">搜索</div>
 		</div>
 		<div class="row">
 			<form action="${pageContext.request.contextPath}/admin/userSearch.html" id="search_form" class="form-inline" method="post">
 				<div class="form-group has-feedback">
-					<label>报名时间:</label> <input class="form-control input-sm form_datetime" type="text" name="regCourseStartTime"> <span class="iconfont icon-kalendar form-control-feedback"></span>
+					<label>报名时间:</label> <input class="form-control input-sm form_datetime" type="text" name="regCourseStartTime"> <span class="iconfont icon-xueqi form-control-feedback"></span>
 				</div>
 				<div class="form-group has-feedback">
-					<label>至</label> <input class="form-control input-sm form_datetime" type="text" name="regCourseEndTime"> <span class="iconfont icon-kalendar form-control-feedback"></span>
+					<label>至</label> <input class="form-control input-sm form_datetime" type="text" name="regCourseEndTime"> <span class="iconfont icon-xueqi form-control-feedback"></span>
 				</div>
 				&nbsp;
 				<div class="form-group">
@@ -70,7 +70,7 @@
 							<td>${user.email}</td>
 							<td>
 							<c:forEach items="${user.roles}" var="role">
-								${role.name}&nbsp;
+								${role.rname}&nbsp;
 							</c:forEach>
 							</td>
 							<td>${user.enable}</td>

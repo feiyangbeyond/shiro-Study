@@ -1,7 +1,7 @@
 body{
     background: #f5f5f5;
 }
-/*å¯¼èˆªåˆ‡æ¢æ ·å¼*/
+/*µ¼º½ÇĞ»»ÑùÊ½*/
 #loginhtml{
     margin-top: 60px;
 }
@@ -32,19 +32,19 @@ body{
     border: none;
 }
 
-/*è®¾ç½®ç™»å½•æ¡†æ ·å¼*/
+/*ÉèÖÃµÇÂ¼¿òÑùÊ½*/
 #loginform,#regform{
     padding: 20px 50px 0 50px;
 }
 
-/*è°ƒæ•´å¤é€‰æ¡†ä¸Šä¸‹é—´è·*/
+/*µ÷Õû¸´Ñ¡¿òÉÏÏÂ¼ä¾à*/
 #loginform > form >div.checkbox,
 #regform > form >div.checkbox{
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
-/*è°ƒå¤§ç™»å½•æŒ‰é’®*/
+/*µ÷´óµÇÂ¼°´Å¥*/
 #loginform > form > div > input.btn,
 #regform > form > div > input.btn{
     height: 40px;

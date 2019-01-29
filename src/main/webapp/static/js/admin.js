@@ -3,13 +3,13 @@ $(function () {
         var a = $(this).prev();//获取到上一个兄弟节点对象
         var i = a.children();
         i.removeClass("icon-jia1");
-        i.addClass("icon-hengxian1");
+        i.addClass("icon-jian");
     });
 
     $(".collapse_all").on("hidden.bs.collapse", function () {
         var a = $(this).prev();//获取到上一个兄弟节点对象
         var i = a.children();
-        i.removeClass("icon-hengxian1");
+        i.removeClass("icon-jian");
         i.addClass("icon-jia1");
     });
 

@@ -1,7 +1,11 @@
 package com.beisi.shiro.controller.sys;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +31,12 @@ public class AdminController {
 	
 	
 	@RequestMapping(value="/admin/main.html",method=RequestMethod.GET)
-	public String admin() {		
+	public String admin(Model model) {
+//		Session session = SecurityUtils.getSubject().getSession();
+//		System.out.println(session);
+		User user = (User) SecurityUtils.getSubject().getPrincipal();
+		model.addAttribute("username",user.getUsername());
+		model.addAttribute("nowDate",new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		return "admin/admin";
 	}
 	

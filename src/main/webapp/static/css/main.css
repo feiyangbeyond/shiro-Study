@@ -1,4 +1,4 @@
-/*鍏ㄥ眬閫氱敤鏍峰紡*/
+/*全局通用样式*/
 input,
 input:focus {
     border: 1px #ccc solid !important;
@@ -6,7 +6,7 @@ input:focus {
     outline: none !important;
 }
 
-/*鏌ヨ鎸夐挳鐒︾偣浜嬩欢*/
+/*查询按钮焦点事件*/
 .btn:focus,
 .btn.active:focus,
 .btn:active:focus,
@@ -16,11 +16,11 @@ input:focus {
     outline: none !important;
     box-shadow: none !important;
 }
-/*鍏ㄥ眬閫氱敤鏍峰紡*/
+/*全局通用样式*/
 
 
 
-/*瀵艰埅鏍峰紡*/
+/*导航样式*/
 #main_nav .navbar-brand {
     padding-left: 40px;
     color: #333 !important;
@@ -68,7 +68,7 @@ input:focus {
     height: 34px;
 }
 
-/*鏌ヨ鎸夐挳鐒︾偣浜嬩欢*/
+/*查询按钮焦点事件*/
 #main_nav .btn:focus,
 #main_nav .btn.active:focus,
 #main_nav .btn:active:focus,
@@ -91,7 +91,7 @@ input:focus {
 }
 
 
-/*椤佃剼鏍峰紡*/
+/*页脚样式*/
 .footer{
     margin-top: 50px;
     background: #666;

@@ -1,18 +1,18 @@
 
 
-/*è½®æ’­çš„æ ·å¼*/
+/*ÂÖ²¥µÄÑùÊ½*/
 #carousel-qhkt {
     margin-top: -20px;
 }
 
 .carousel-inner > div.item {
-    /*æŒ‡å®šèƒŒæ™¯å›¾ç‰‡æ°´å¹³å‚ç›´å±…ä¸­*/
+    /*Ö¸¶¨±³¾°Í¼Æ¬Ë®Æ½´¹Ö±¾ÓÖĞ*/
     background-position: center center !important;
-    /*coverå¦‚æœé‡åˆ°å°å›¾ï¼Œåˆ™æŒ‰ç…§å›¾ç‰‡çŸ­è¾¹æ”¾å¤§åˆ°å®¹å™¨çš„çŸ­è¾¹ï¼Œcontainä¸ºä»¥é•¿è¾¹æ‹‰é•¿*/
+    /*coverÈç¹ûÓöµ½Ğ¡Í¼£¬Ôò°´ÕÕÍ¼Æ¬¶Ì±ß·Å´óµ½ÈİÆ÷µÄ¶Ì±ß£¬containÎªÒÔ³¤±ßÀ­³¤*/
     background-size: cover !important;
 }
 
-/*åª’ä½“æŸ¥è¯¢*/
+/*Ã½Ìå²éÑ¯*/
 @media (min-width: 769px) {
     .carousel-inner > div.item {
         height: 410px;
@@ -25,12 +25,12 @@
     }
 }
 
-/*å°†è¯¾ç¨‹åˆ—è¡¨ä¸‹çš„æ¨ªçº¿å¢ç²—*/
+/*½«¿Î³ÌÁĞ±íÏÂµÄºáÏßÔö´Ö*/
 .page-header {
     border-bottom: 4px #ddd solid;
 }
 
-/*å°†â€œå…¨éƒ¨è¯¾ç¨‹æ”¾åˆ°å³ä¾§â€*/
+/*½«¡°È«²¿¿Î³Ì·Åµ½ÓÒ²à¡±*/
 #carouseList > .page-header > h3 {
     position: relative;
 }
@@ -45,10 +45,10 @@
 }
 
 #carouseList > .page-header > h3 > a:hover {
-    text-decoration: none; /*å»é™¤å…¨éƒ¨è¯¾ç¨‹é¼ æ ‡æŒ‡ä¸Šå»æ˜¾ç¤ºä¸‹åˆ’çº¿*/
+    text-decoration: none; /*È¥³ıÈ«²¿¿Î³ÌÊó±êÖ¸ÉÏÈ¥ÏÔÊ¾ÏÂ»®Ïß*/
 }
 
-/*è°ƒè¯¾ç¨‹çš„è¯¾ç¨‹æè¿°çš„h3æ˜¾ç¤º*/
+/*µ÷¿Î³ÌµÄ¿Î³ÌÃèÊöµÄh3ÏÔÊ¾*/
 .thumbnail{
     border: 1px #fff solid;
     padding: 10px;

@@ -5,7 +5,7 @@ input:focus {
     outline: none !important;
 }
 
-/*æŸ¥è¯¢æŒ‰é’®ç„¦ç‚¹äº‹ä»¶*/
+/*²éÑ¯°´Å¥½¹µãÊÂ¼ş*/
 .btn:focus,
 .btn.active:focus,
 .btn:active:focus,
@@ -16,7 +16,7 @@ input:focus {
     box-shadow: none !important;
 }
 
-/*æœç´¢*/
+/*ËÑË÷*/
 
 .search_title_bar {
     height: 39px;
@@ -59,7 +59,7 @@ input:focus {
     color: #fff;
 }
 
-/*åˆ—è¡¨*/
+/*ÁĞ±í*/
 #content_table {
     margin-top: 15px;
     padding-right: 10px;
@@ -74,7 +74,7 @@ input:focus {
     border: 1px #031F8D solid;
 }
 
-/*åˆ†é¡µæŒ‰é’®*/
+/*·ÖÒ³°´Å¥*/
 #pager{
     padding-right: 10px;
     margin-bottom: 20px;
@@ -92,12 +92,12 @@ input:focus {
     font-size: 16px;
 }
 
-/*æ—¶é—´é€‰æ‹©æ¡†*/
+/*Ê±¼äÑ¡Ôñ¿ò*/
 .icon-kalendar{
     color: #031F8D;
 }
 
-/* éšè—å…ƒç´  */
+/* Òş²ØÔªËØ */
 .hiden {
 	display: none;
 }
