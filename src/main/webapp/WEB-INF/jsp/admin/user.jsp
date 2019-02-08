@@ -149,7 +149,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/lib/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 	<script src="${pageContext.request.contextPath}/static/lib/bootstrapSelect/js/bootstrap-select.min.js"></script>
 	<script src="${pageContext.request.contextPath}/static/lib/bootstrapSelect/js/i18n/defaults-zh_CN.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/user.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/admin/user.js"></script>
 	<script type="text/javascript">
 		var isFirstPage = ${userDatasByPager.isFirstPage};//是否为第一页
 		var isLastPage = ${userDatasByPager.isLastPage};//是否为最后一页

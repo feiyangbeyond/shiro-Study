@@ -178,7 +178,7 @@
 	<script src="${pageContext.request.contextPath}/static/lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/static/lib/datetimepicker/js/bootstrap-datetimepicker.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/lib/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/user.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/admin/user.js"></script>
 </body>
 
 </html>

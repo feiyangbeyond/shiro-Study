@@ -105,7 +105,7 @@
 	<script
 		src="${pageContext.request.contextPath}/static/lib/bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/static/js/admin.js"></script>
+		src="${pageContext.request.contextPath}/static/js/admin/admin.js"></script>
 </body>
 </html>
 <iframe id="iframe-contant" class="navbar-fixed-bottom" frameborder="no"

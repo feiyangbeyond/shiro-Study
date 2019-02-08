@@ -40,14 +40,14 @@ $(function () {
     		//3.通过ajax，向服务端提交批量删除用户的请求，userIds传入后台
     		if(flag){
     			$.ajax({
-    				url: '/qihangkt/admin/batchDelUsers.html',
+    				url: '/shiro/admin/batchDelUsers.html',
     				type: 'POST',
     				data: {
     					uid:datas
     				},
     				success: function(rs){
     					if(rs == "success"){
-    						$(location).attr("href","/qihangkt/admin/userManager.html");
+    						$(location).attr("href","/shiro/admin/userManager.html");
     					}
     				}
     			});

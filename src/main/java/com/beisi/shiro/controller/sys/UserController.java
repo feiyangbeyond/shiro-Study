@@ -15,6 +15,7 @@ import com.beisi.shiro.model.sys.Role;
 import com.beisi.shiro.model.sys.User;
 import com.beisi.shiro.service.sys.RoleService;
 import com.beisi.shiro.service.sys.UserService;
+import com.beisi.shiro.utils.GenerateUUID;
 import com.github.pagehelper.PageInfo;
 
 
@@ -29,7 +30,8 @@ public class UserController {
 	private RoleService roleService;
 	
 	@RequestMapping(value="/admin/addUser.html",method=RequestMethod.POST)
-	public String addUser(User user,Integer[] roleIds) {
+	public String addUser(User user,String[] roleIds) {
+		user.setId(GenerateUUID.getUUID());
 		this.userService.addUser(user,roleIds);
 		return "redirect:/admin/userManager.html";
 	}

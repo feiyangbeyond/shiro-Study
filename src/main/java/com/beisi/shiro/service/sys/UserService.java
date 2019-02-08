@@ -9,7 +9,7 @@ import com.github.pagehelper.PageInfo;
 public interface UserService extends BaseService<User>{
 	
 	//添加用户
-	void addUser(User user, Integer[] roleIds);
+	void addUser(User user, String[] roleIds);
 
 	/**
 	 * 关联查询（用户和角色信息）

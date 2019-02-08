@@ -29,15 +29,15 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	@Override
-	public void addUser(User user, Integer[] roleIds) {
+	public void addUser(User user, String[] roleIds) {
 		// 完成添加用户的功能，分两部分
-		this.addForNotMatch(new Object[] { "username", "password", "email", "phone", "enable", "add_date" },
-				new Object[] { user.getUsername(), user.getPassword(), user.getEmail(), user.getPhone(), 1,
+		this.addForNotMatch(new Object[] {"id", "username", "password", "email", "phone", "enable", "add_date" },
+				new Object[] { user.getId(),user.getUsername(), user.getPassword(), user.getEmail(), user.getPhone(), 1,
 						new Date() });
-		// 根据新添加激怒的用户的用户名称来查询出刚刚添加进数据库的用户(根据用户名获取用户对象方法)
-		User u = userDao.getUserByName(user.getUsername());
+//		// 根据新添加激怒的用户的用户名称来查询出刚刚添加进数据库的用户(根据用户名获取用户对象方法),主要获取刚插入的用户ID
+//		User u = userDao.getUserByName(user.getUsername());
 		// 添加用户与角色关联表
-		for (Integer rid : roleIds) {
+		for (String rid : roleIds) {
 			// 这里的id也需要使用null占位
 		}
 	}
