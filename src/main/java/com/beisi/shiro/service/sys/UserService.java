@@ -35,9 +35,9 @@ public interface UserService extends BaseService<User>{
 
 	void updateUser(User user, Integer[] roleIds);
 
-	void deleteByUidRelRole(Integer id);
+	void deleteByUidRelRole(String id);
 
-	void batchDelUsersByIds(Integer[] uidArr);
+	void batchDelUsersByIds(String[] uidArr);
 
 	PageInfo<User> selectUsersBySearchPage(int pageNum, int pageSize,String userInfo);	
 	

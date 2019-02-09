@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -23,6 +24,7 @@
 </head>
 
 <body>
+<shiro:hasRole name="user"></shiro:hasRole>
 	<div id="admin_top" class="container-fluid">
 		<div class="row">
 			<div class="navbar navbar-inverse navbar-static-top navbar-hed">

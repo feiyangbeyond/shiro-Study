@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.beisi.shiro.dao.sys.BaseDao;
 import com.beisi.shiro.dao.sys.UserDao;
+import com.beisi.shiro.dao.sys.UserRoleDao;
 import com.beisi.shiro.model.sys.User;
 import com.beisi.shiro.service.sys.UserService;
+import com.beisi.shiro.utils.GenerateUUID;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +23,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private UserRoleDao userRoleDao;
 
 
 	@Override
@@ -37,8 +41,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 //		// 根据新添加激怒的用户的用户名称来查询出刚刚添加进数据库的用户(根据用户名获取用户对象方法),主要获取刚插入的用户ID
 //		User u = userDao.getUserByName(user.getUsername());
 		// 添加用户与角色关联表
+		//修改时间默认为null，否则会出现字段与传参不对等
 		for (String rid : roleIds) {
-			// 这里的id也需要使用null占位
+			Object[] objects = {GenerateUUID.getUUID(),user.getId(),rid,new Date(),null};
+			userRoleDao.add("t_user_role", objects);
 		}
 	}
 
@@ -80,15 +86,18 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	@Override
-	public void deleteByUidRelRole(Integer id) {
+	public void deleteByUidRelRole(String id) {
 		// 第一步：删除user关联的关系删除
+		this.userRoleDao.deleteUserRoleByUserId(id);
 		// 第二部：删除用户本身
 		this.delete(id);
 	}
+	
+	
 
 	@Override
-	public void batchDelUsersByIds(Integer[] uidArr) {
-		for (Integer id : uidArr) {
+	public void batchDelUsersByIds(String[] uidArr) {
+		for (String id : uidArr) {
 			this.deleteByUidRelRole(id);
 		}
 	}
@@ -101,5 +110,4 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		PageInfo<User> info = new PageInfo<>(userDatas);
 		return info;
 	}
-
 }

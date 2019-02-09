@@ -66,14 +66,14 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(String id) {
 		getBaseDao().delete(tableName, id);		
 	}
 
 	@Override
 	public void update(T t) {
 		List<Object> list = new ArrayList<>();
-		int id = 0;
+		String id = "";
 		for (Field field : t.getClass().getDeclaredFields()) {//可访问私有类型的字段
 			field.setAccessible(true);//打开获取private修饰的书信权限  权限
 			try {
@@ -81,7 +81,7 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 					continue;
 				}
 				if("id".equals(field.getName())) {
-					id = (Integer) field.get(t);
+					id = (String) field.get(t);
 					continue;
 				}
 				//剩下的才是要修改到数据表里的字段值
@@ -96,7 +96,7 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T select(int id) {
+	public T select(String id) {
 		Map<Object,Object> rsMap = getBaseDao().select(tableName, id);
 		//需要把Map转型为T
 		return (T) MapToEntityTool.map2entity(rsMap, clazz);

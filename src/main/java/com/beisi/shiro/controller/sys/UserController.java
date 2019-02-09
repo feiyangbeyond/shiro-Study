@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import com.beisi.shiro.model.sys.User;
 import com.beisi.shiro.service.sys.RoleService;
 import com.beisi.shiro.service.sys.UserService;
 import com.beisi.shiro.utils.GenerateUUID;
+import com.beisi.shiro.utils.MD5EncryptionUtil;
 import com.github.pagehelper.PageInfo;
 
 
@@ -29,9 +31,15 @@ public class UserController {
 	@Autowired
 	private RoleService roleService;
 	
+	
+	
 	@RequestMapping(value="/admin/addUser.html",method=RequestMethod.POST)
 	public String addUser(User user,String[] roleIds) {
 		user.setId(GenerateUUID.getUUID());
+		//对用户进行密码加密，pwd再进行md5加密
+		String pwd = MD5EncryptionUtil.md5Password(user.getPassword());
+		String formPasswordpwd = (new SimpleHash("MD5",pwd,user.getUsername(),1024)).toString();
+		user.setPassword(formPasswordpwd);
 		this.userService.addUser(user,roleIds);
 		return "redirect:/admin/userManager.html";
 	}
@@ -91,7 +99,7 @@ public class UserController {
 	
 	//单个删除用户
 	@RequestMapping(value="/admin/delUser.html",method=RequestMethod.GET)
-	public String delUserById(Integer id) {
+	public String delUserById(String id) {
 		this.userService.deleteByUidRelRole(id);
 		return "redirect:/admin/userManager.html";
 	}
@@ -103,11 +111,7 @@ public class UserController {
 		uid = uid.substring(1, uid.length() - 1);
 		uid = uid.replaceAll("\"", "");
 		String[] uidStrArr = uid.split(",");
-		Integer[] uidArr = new Integer[uidStrArr.length];
-		for (int i = 0; i < uidStrArr.length; i++) {
-			uidArr[i] = Integer.parseInt(uidStrArr[i]);
-		}
-		this.userService.batchDelUsersByIds(uidArr);
+		this.userService.batchDelUsersByIds(uidStrArr);
 		return "success";
 	}
 	

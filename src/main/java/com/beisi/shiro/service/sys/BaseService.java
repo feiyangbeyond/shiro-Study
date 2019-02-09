@@ -17,11 +17,12 @@ public interface BaseService<T> {
 	 */
 	public void addForNotMatch(Object[] fielsNames,Object[] fieldValues);
 	
-	public void delete(int id);
+	void delete(String id);
 	
 	public void update(T t);
 	
-	public T select(int id);
+	public T select(String id);
 	
 	public List<T> selectAll();
+	
 }

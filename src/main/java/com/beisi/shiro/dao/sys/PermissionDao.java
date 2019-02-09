@@ -13,7 +13,7 @@ public interface PermissionDao {
 	/**
 	 * 通过uid获取与这个用户关联的权限swt集合
 	 */
-	Set<String> getPermission(@Param("uid") String uid);
+	Set<String> getPermissionsByUid(@Param("uid") String uid);
 
 	List<Permission> getAllPermissions();
 

@@ -126,7 +126,7 @@
 	</bean>
 	<!-- mybatis接口扫描 -->
 	<mybatis-spring:scan
-		base-package="com.beisi.shiro.dao" />
+		base-package="com.beisi.shiro.dao.**" />
 
 	<!-- shiro的核心组件：securityManager -->
 	<bean id="securityManager"
@@ -135,20 +135,21 @@
 		<property name="cacheManager" ref="cacheManager" />
 		<!-- 多realm认证策略必须放在多realm配置之前 -->
 		<property name="authenticator" ref="authenticator"></property>
-		<!-- 配置域realm，用户名，密码，角色都保存在域里，后面要细讲，这是配置单个realm的配置方法 -->
+		<!-- 配置域realm，用户名，密码，角色都保存在域里，这是配置单个realm的配置方法 -->
 		<!-- <property name="realm" ref="shiroRealm" /> -->
 		<!-- 这是多个realm的配置方法 ，会根据配置顺序依次验证 -->
-		<property name="realms">
+ 		<property name="realms">
 			<list>
 				<ref bean="shiroRealm" />
-		<!-- 		<ref bean="qQRealm" />
+<!-- 				<ref bean="qQRealm" />
 				<ref bean="weixinRealm" /> -->
 			</list>
 		</property>
+<!-- 		设置登录时长 半天1个小时
+		<property name="rememberMeManager.cookie.maxAge" value="3600"></property> -->
 	</bean>
 	<!-- 设置多realm认证策略 -->
- 	<bean id="authenticator"
-		class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+ 	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
 		<property name="authenticationStrategy">
 			<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
 		</property>
@@ -156,7 +157,7 @@
 			name="realms"> <list> <ref bean="shiroRealm"/> <ref bean="qQRealm"/> <ref 
 			bean="weixinRealm"/> </list> </property>###-->
 	</bean> 
-
+    
 	<!-- 加载ehcache全局配置文件 -->
 	<bean id="cacheManager"
 		class="org.apache.shiro.cache.ehcache.EhCacheManager">

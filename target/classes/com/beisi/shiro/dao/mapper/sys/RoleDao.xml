@@ -5,8 +5,19 @@
   <mapper namespace="com.beisi.shiro.dao.sys.RoleDao">
   	
 
+	<select id="getRolesByUid" parameterType="String" resultType="String">
+	
+		select r.rcode from t_user u,t_role r,t_user_role ur 
+		where u.id=ur.userId and ur.roleId = r.id
+		and u.id = #{uid}
+		
+<!-- 		select r.id,r.rname,r.rcode from t_user u,t_role r,t_user_role ur 
+		where u.id=ur.userId and ur.roleId = r.id
+		and u.id = #{uid} -->
+	</select>
+	
 	<select id="getRoleByUid" parameterType="String" resultMap="RolePermissionMap">
-		select r.id,r.rname,r.rcode from t_user u,t_role r,t_user_role ur 
+ 		select r.id,r.rname,r.rcode from t_user u,t_role r,t_user_role ur 
 		where u.id=ur.userId and ur.roleId = r.id
 		and u.id = #{uid}
 	</select>
@@ -18,9 +29,9 @@
 		<result column="rcode" property="rcode" />
 		<result column="add_date" property="addDate" />
 		<result column="up_date" property="upDate" />
-		<collection property="permission"
+		<!-- <collection property="permission"
 			select="com.beisi.shiro.dao.sys.PermissionDao.getPermissionByid" column="id">
-		</collection>
+		</collection> -->
 	</resultMap>
 	
 	<select id="getRolesObjByUid" parameterType="String" resultType="com.beisi.shiro.model.sys.Role">

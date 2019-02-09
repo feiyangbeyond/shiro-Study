@@ -9,6 +9,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -32,20 +33,44 @@ public class LoginController {
 		return "login";
 	}
 
-	@RequestMapping(value = "/login.html", method = RequestMethod.POST)
-	public String loginPost(String userInfo, String password, boolean remeberme, HttpSession session) {
-		// 使用shiro登录认证
-		// 1.认证核心组件，subject，获取Subject对象
+//	@RequestMapping(value = "/login.html", method = RequestMethod.POST)
+//	public String loginPost(String userInfo, String password, boolean remeberme, HttpSession session) {
+//		// 使用shiro登录认证
+//		// 1.认证核心组件，subject，获取Subject对象
+//		Subject subject = SecurityUtils.getSubject();
+//		// 2.登录验证第二部，将表单提交过来的用户名和密码封装到token对象
+//		UsernamePasswordToken token = new UsernamePasswordToken(userInfo, password);
+//		// 3.调用subject对象中的login方法，进行登录验证
+//		// 开启记住我功能
+//		if (remeberme) {
+//			token.setRememberMe(true);
+//		}
+//		try {
+//			subject.login(token);// 让shiro框架帮助我们进行登录验证
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return "loginError";
+//		}
+//		return "redirect:/admin/main.html";
+//	}
+	
+	@PostMapping("/login.html")
+	public String login(String userInfo,String password,Integer rememberme,HttpSession session) {
+		//实现我们的登录验证，使用shiro
+		//1.认证的核心组件，subject,获取Subject对象
 		Subject subject = SecurityUtils.getSubject();
-		// 2.登录验证第二部，将表单提交过来的用户名和密码封装到token对象
+		
+		//2.登录验证的第二步，讲表单提交过来的用户名和密码封装到token对象
 		UsernamePasswordToken token = new UsernamePasswordToken(userInfo, password);
-		// 3.调用subject对象中的login方法，进行登录验证
-		// 开启记住我功能
-		if (remeberme) {
+		//3.调用subject对象里的login方法，进行登录验证
+		
+		//开启记住我功能
+		
+		if(rememberme != null && rememberme == 1) {
 			token.setRememberMe(true);
 		}
 		try {
-			subject.login(token);// 让shiro框架帮助我们进行登录验证
+			subject.login(token); //让shiro框架帮助我们进行登录的验证，认证
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "loginError";

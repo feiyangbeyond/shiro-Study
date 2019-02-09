@@ -1,10 +1,13 @@
 package com.beisi.shiro.model.sys;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 
-public class User { // User的名称必须和数据表里的表名称t_user
+public class User implements Serializable{ // User的名称必须和数据表里的表名称t_user
+	private static final long serialVersionUID = 1L;
+	
 	private String id;// 出了名字对应以为，坑：int，id，id将获取不到值,整数类型不能用int，要用Integer
 	private String username;
 	private String password;

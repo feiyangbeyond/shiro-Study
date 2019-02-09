@@ -9,6 +9,7 @@ import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -71,5 +72,11 @@ public class AdminController {
 	@RequestMapping(value="/admin/resManager.html",method=RequestMethod.GET)
 	public String resManager() {
 		return "admin/resources";
+	}
+	
+	//没有权限访问的页面
+	@GetMapping("/unauthorized.html")
+	public String unauthorized() {
+		return "unauthorized";
 	}
 }

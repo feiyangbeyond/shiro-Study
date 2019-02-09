@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beisi.shiro.dao.sys.UserRoleDao">
+
+	<delete id="deleteUserRoleByUserId">
+		delete from t_user_role where userId=#{id}
+	</delete>
+<!-- 
+	<select id="getUserByName"
+		resultType="com.beisi.shiro.model.sys.User">
+		select * from t_user as u where u.username = #{username}
+	</select>
+
+	<select id="selectRelevanceUser" resultMap="UserRoleMap">
+		SELECT
+		u.id,u.username,u.`password`,u.email,u.phone,u.`enable`
+		FROM
+		t_user AS u
+	</select>
+
+	<resultMap type="com.beisi.shiro.model.sys.User"
+		id="UserRoleMap">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="email" property="email" />
+		<result column="phone" property="phone" />
+		<result column="enable" property="enable" />
+		<collection property="roles"
+			select="com.beisi.shiro.dao.sys.RoleDao.getRoleByUid" column="id">
+		</collection>
+	</resultMap>
+
+ -->
+</mapper>

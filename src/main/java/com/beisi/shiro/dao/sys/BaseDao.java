@@ -12,11 +12,11 @@ public interface BaseDao {
 	
 	public void addForNotMatch(@Param("tableName")String tableName,@Param("fielsNames")Object[] fielsNames,@Param("fieldValues") Object[] fieldValues);
 	
-	public void delete(@Param("tableName") String tableName,@Param("id") Integer id);
+	public void delete(@Param("tableName") String tableName,@Param("id") String id);
 	
-	public void update(@Param("tableName") String tableName,@Param("id") Integer id,@Param("objects") Object[] objects);
+	public void update(@Param("tableName") String tableName,@Param("id") String id,@Param("objects") Object[] objects);
 	
-	public Map<Object,Object> select(@Param("tableName") String tableName,@Param("id") Integer id);
+	public Map<Object,Object> select(@Param("tableName") String tableName,@Param("id") String id);
 	
 	public List<Map<Object,Object>> selectAll(@Param("tableName") String tableName);
 

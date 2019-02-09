@@ -22,8 +22,7 @@ import com.beisi.shiro.dao.sys.RoleDao;
 import com.beisi.shiro.dao.sys.UserDao;
 import com.beisi.shiro.model.sys.User;
 
-public class ShiroRealm
-		/* implements Realm */ extends AuthorizingRealm/* AuthorizingRealm做登录和权限认证，AuthenticatingRealm只做登录认证 */ {
+public class ShiroRealm	/* implements Realm */ extends AuthorizingRealm/* AuthorizingRealm做登录和权限认证，AuthenticatingRealm只做登录认证 */ {
 	@Autowired
 	private UserDao userDao;
 	
@@ -34,10 +33,10 @@ public class ShiroRealm
 	private PermissionDao permissionDao;
 	/*
 	 * @Override public AuthenticationInfo getAuthenticationInfo(AuthenticationToken
-	 * token) throws AuthenticationException { // TODO Auto-generated method stub
+	 * token) throws AuthenticationException { 
 	 * return null; }
 	 * 
-	 * @Override public String getName() { // TODO Auto-generated method stub return
+	 * @Override public String getName() { 
 	 * null; }
 	 * 
 	 * @Override public boolean supports(AuthenticationToken arg0) {
@@ -95,7 +94,7 @@ public class ShiroRealm
 		//根据获取的用户信息，（用户信息中已经包含了角色/权限信息，直接去除）没包含则从数据库中查询用户的角色/权限信息，查角色信息
 		Set<String> roles = roleDao.getRolesByUid(user.getId());
 		//通过关联的角色信息，查询到关联的权限信息permission
-		Set<String> permissions = permissionDao.getPermission(user.getId());
+		Set<String> permissions = permissionDao.getPermissionsByUid(user.getId());
 
 		Set<String> newPsrmission = new HashSet<>();
 		for(String per:permissions) {		
@@ -128,3 +127,88 @@ public class ShiroRealm
 //	}
 
 }
+
+//public class ShiroRealm extends AuthorizingRealm {
+//	
+//	@Autowired
+//	private UserDao userDao;
+//	
+//	@Autowired
+//	private RoleDao roleDao;
+//	
+//	@Autowired
+//	private PermissionDao permissionDao;
+//
+//	/**
+//	 * 真正在做项目的时候，登录的验证工作，doGetAuthenticationInfo方法中来实现的
+//	 */
+//	@Override
+//	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token1) throws AuthenticationException {
+//		//1.token把参数，强转UsernamePasswordToken
+//		UsernamePasswordToken token = (UsernamePasswordToken) token1;
+//		//2.从UsernamePasswordToken里获取表单提交过来的用户名；
+//		String username = token.getUsername();
+//		//3.从数据库中查询有没的用户名是username的用户记录
+//		User user = userDao.getUserByName(username);
+//		//4.根据user对象的具体情况，可以抛出shiro定义的异常
+//		if(user == null) 
+//			throw new UnknownAccountException("没有此用户");
+//		if (user.getEnable() == 0) {
+//			throw new LockedAccountException("用户已被管理员禁用");
+//		}
+//		//5.进一步的让shiro来帮我们判断用户表单传来的密码是步是对的
+//		ByteSource slat = ByteSource.Util.bytes(username);
+//		AuthenticationInfo info = 
+//				new SimpleAuthenticationInfo(user, user.getPassword(), slat, getName());
+//		//principals:可以是用户名，也可以是登录用户的user对象
+//		//hashedCredentials：从数据库中获取的用户的密码
+//		//credentialsSalt,密码加密的盐值
+//		//RealmName:ShiroRealm类的名字
+//		System.out.println("在ShiroRealm中进行了登录认证。。。。。");
+//		return info;  //剩下的密码的对比，shiro框架内部来做的
+//	}
+//	
+//	/**
+//	 * 在shiro中专门用来做授权认证的方法
+//	 */
+//	@Override
+//	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+//		System.out.println("=====授权，查询一次数据====");
+//		//处理授权认证的这个方法里带参数：PrincipalCollection principals
+//		//传进来的是登录成功后的用户信息（用户名或用户对象），谁传来的（做登录认证方法doGetAuthenticationInfo传来的）
+//		//由于登录认证可能是多个Realm对象，所以可能传过来多个用户信息，这个参数类本质是一个集合，可能有多个元素
+//		//参数的集合里边的元素的顺序：受Realm在spring.xml中配置的顺序影响
+////		System.out.println(principals);
+////		System.out.println(principals.getPrimaryPrincipal());
+////		System.out.println(principals.oneByType(User.class));
+////		System.out.println(principals.asList());
+//		
+//		
+//		//1、从参数principals中获取当前登录成功后的用户信息（用户名称或用户对象）
+//		User user = principals.oneByType(User.class);
+//		
+//		//2、根据第一步中获取到的用户信息，（用户信息中已经包含了角色/权限信息，直接取出来）没包含的话，就从
+//		//数据库中去查询这个用户关联的角色/权限信息，基于角色的权限控制，查角色信息
+//		Set<String> roles = roleDao.getRolesByUid(user.getId());
+//		//通过关联的role信息，进一步的查询到关联的permission信息，set集合
+//		Set<String> permissions = permissionDao.getPermissionsByUid(user.getId());
+//		//System.out.println(permissions);
+//		Set<String> newPermissions = new HashSet<>();
+//		for(String per:permissions) {
+//			if(per.contains("p:")) {
+//				newPermissions.add(per.replaceAll("p:", ""));
+//			}else {
+//				newPermissions.add(per);
+//			}
+//		}
+//		
+//		
+//		//System.out.println(roles);
+//		
+//		//3.把第二部中获取到的登录用户关联的role的set集合注入到
+//		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+//		info.addRoles(roles); //构造返回的info对象，把roles集合注入到info对象里，返回
+//		info.addStringPermissions(newPermissions);
+//		return info;
+//	}
+//}

@@ -28,7 +28,6 @@ public class FilterChainDefinitionMapFactory {
 				permsMap.put(permission.getPathUrl(),permission.getPname());
 			}
 		}
-
 		return permsMap;
 	}
 }

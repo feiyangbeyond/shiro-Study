@@ -134,6 +134,7 @@ public class MapToEntityTool {
 			for (Field field : fields) {
 				field.setAccessible(true);// 获取去掉private修饰的属性
 				fieldName = field.getName();// 拿到属性对象对应的名称
+				if(fieldName.equals("serialVersionUID"))continue;//如果是静态变量编码，则跳过
 				fieldNameList.add(fieldName);
 				//获取方法名称
 				setMethodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
