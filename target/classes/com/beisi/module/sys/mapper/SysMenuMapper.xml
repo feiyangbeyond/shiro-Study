@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beisi.module.sys.dao.SysMenuDao">
+	<resultMap type="com.beisi.module.sys.entity.SysMenu" id="SysMenuMap">
+		<result property="permissionsId" column="PERMISSIONS_ID" />
+		<result property="menuId" column="MENU_ID" />
+		<result property="parentId" column="PARENT_ID" />
+		<result property="menuName" column="MENU_NAME"/>
+		<result property="parentName" column="parentName"/>
+		<result property="menuUrl" column="MENU_URL" />
+		<result property="menuPerms" column="MENU_PERMS"/>
+		<result property="menuType" column="MENU_TYPE"/>
+		<result property="menuIcon" column="MENU_ICON" />
+		<result property="orderNum" column="ORDER_NUM"/>
+		<result property="createUser" column="CREATE_USER" />
+		<result property="createTime" column="CREATE_TIME"/>
+		<result property="updateUser" column="UPDATE_USER"/>
+		<result property="updateTime" column="UPDATE_TIME"/>
+	</resultMap>
+	
+	<!-- 根据父菜单，查询子菜单 -->
+	<select id="listMenuIdByParentId" resultMap="SysMenuMap">
+		SELECT
+			*
+		FROM
+			t_sys_menu
+		WHERE
+			PARENT_ID = #{parentId} order by ORDER_NUM asc
+	</select>
+	
+	<!-- 获取不包含按钮的菜单列表 -->
+	<select id="listNotButton" resultMap="SysMenuMap">
+		SELECT
+			*
+		FROM
+			t_sys_menu
+		WHERE
+			MENU_TYPE != 2
+		ORDER BY
+			ORDER_NUM ASC
+	</select>
+	
+	<!-- 查询用户的权限列表 -->
+	<select id="listUserPerm" resultMap="SysMenuMap">
+		SELECT DISTINCT
+			m.*, (select p.MENU_NAME from t_sys_menu p where p.MENU_ID = m.PARENT_ID) AS parentName
+		FROM
+			t_sys_user_role ur
+		LEFT JOIN t_sys_role_menu rm ON ur.ROLE_ID = rm.ROLE_ID
+		LEFT JOIN t_sys_menu m ON rm.PERMISSIONS_ID = m.PERMISSIONS_ID
+		WHERE
+			ur.C_USR_ID = #{userId} order by m.ORDER_NUM asc
+	</select>
+	
+	<!-- 根据菜单ID获取菜单信息 -->
+	<select id="getByPermissionsId" resultMap="SysMenuMap">
+		select m.*,(select p.MENU_NAME from t_sys_menu p where p.MENU_ID = m.PARENT_ID) as parentName 
+		from t_sys_menu m where m.PERMISSIONS_ID = #{prmissionsId}
+	</select>
+	
+	<!-- 查询菜单列表 -->
+	<select id="listMenu" resultMap="SysMenuMap">
+		select m.*,(select p.MENU_NAME from t_sys_menu p where p.MENU_ID = m.PARENT_ID) as parentName 
+		from t_sys_menu m 
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by m.${sidx} ${order}
+			</when>
+			<otherwise>
+				order by m.ORDER_NUM asc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit !=null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<!-- 查询总数 -->
+	<select id="countMenu" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			t_sys_menu
+	</select>
+	
+	<!-- 保存菜单 -->
+	<insert id="saveMenu" parameterType="com.beisi.module.sys.entity.SysMenu">
+		INSERT INTO t_sys_menu (
+			PERMISSIONS_ID,
+			MENU_ID,
+			PARENT_ID,
+			MENU_NAME,
+			MENU_URL,
+			MENU_PERMS,
+			MENU_TYPE,
+			MENU_ICON,
+			ORDER_NUM,
+			CREATE_USER,
+			CREATE_TIME
+		)
+		VALUES
+		(	
+			#{permissionsId},
+			#{menuId}, 
+			#{parentId}, 
+			#{menuName}, 
+			#{menuUrl}, 
+			#{menuPerms}, 
+			#{menuType}, 
+			#{menuIcon}, 
+			#{orderNum},
+			#{createUser},
+			#{createTime}
+		)
+	</insert>
+
+	<!-- 更新菜单 -->
+	<update id="updateMenu" parameterType="com.beisi.module.sys.entity.SysMenu">
+		update t_sys_menu
+		<set>
+			<if test="menuId != null">MENU_ID = #{menuId},</if>
+			<if test="parentId != null">PARENT_ID = #{parentId},</if>
+			<if test="menuName != null and menuName.trim() != ''">MENU_NAME = #{menuName},</if>
+			<if test="menuUrl != null">MENU_URL = #{menuUrl},</if>
+			<if test="menuPerms != null">MENU_PERMS = #{menuPerms},</if>
+			<if test="menuType != null">MENU_TYPE = #{menuType},</if>
+			<if test="menuIcon != null">MENU_ICON = #{menuIcon},</if>
+			<if test="orderNum != null">ORDER_NUM = #{orderNum},</if>
+			<if test="updateUser != null">UPDATE_USER = #{updateUser},</if>
+			<if test="updateTime != null">UPDATE_TIME = #{updateTime}</if>
+		</set>
+		where PERMISSIONS_ID = #{permissionsId}
+	</update>
+	
+	<!-- 根据菜单ID删除菜单 -->
+	<delete id="deleteBatchByMenuIds">
+		delete from t_sys_menu where PERMISSIONS_ID in
+		<foreach item="permissionsId" collection="array" open="(" separator="," close=")">
+			#{permissionsId}
+		</foreach>;
+		delete from t_sys_role_menu where PERMISSIONS_ID in
+		<foreach item="permissionsId" collection="array" open="(" separator="," close=")">
+			#{permissionsId}
+		</foreach>
+	</delete>
+	
+	<!-- 查询最大menuId值 -->
+	<select id="queryLastMenuId" resultType="int">
+		SELECT
+			max(MENU_ID)
+		FROM
+			t_sys_menu
+	</select>
+	
+	<!-- 根据menuID获取菜单信息 -->
+	<select id="getByMenuId" resultMap="SysMenuMap">
+		select m.*,(select p.MENU_NAME from t_sys_menu p where p.MENU_ID = m.PARENT_ID) as parentName 
+		from t_sys_menu m where m.MENU_ID = #{value}
+	</select>
+	
+</mapper>

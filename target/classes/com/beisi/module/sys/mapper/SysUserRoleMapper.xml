@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beisi.module.sys.dao.SysUserRoleDao">
+	<resultMap type="com.beisi.module.sys.entity.SysUserRole" id="SysUserRoleMap">
+		<result property="rowId" column="id" />
+		<result property="cUsrId" column="user_id" />
+		<result property="roleId" column="role_id" />
+		<result property="createUser" column="CREATE_USER" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="updateUser" column="UPDATE_USER" />
+		<result property="updateTime" column="UPDATE_TIME" />
+	</resultMap>
+
+	<!-- 根据用户ID保存更新关联角色 -->
+	<insert id="saveUserRole" parameterType="com.beisi.module.sys.entity.SysUserRole">
+		insert into t_sys_user_role
+		(
+			ROW_ID,C_USR_ID,ROLE_ID,CREATE_USER,CREATE_TIME
+		)
+		values
+		(
+			#{rowId},#{cUsrId},#{roleId},#{createUser},#{createTime}
+		)
+<!-- 		<foreach collection="roleIdList" item="item" index="index" separator=",">
+			(
+				#{rowId},#{userId},#{item},#{creatUser},#{creatTime}
+			)
+		</foreach> 这里需要在程序中做事物处理，因为数据库设置的是非自增ID，所以不能用foreach-->
+	</insert>
+
+	<!-- 根据用户ID获取角色列表 -->
+	<select id="listUserRoleId" resultType="String">
+		select ROLE_ID from t_sys_user_role where C_USR_ID = #{userId}
+	</select>
+
+	<!-- 根据用户ID删除用户与角色对应关系 -->
+	<delete id="deleteUserRole">
+		delete from t_sys_user_role where C_USR_ID = #{userId}
+	</delete>
+</mapper>

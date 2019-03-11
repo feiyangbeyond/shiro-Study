@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd ">
+
+
+	<!-- 配置数据源dataSource -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${druid.initialSize}" />
+		<property name="minIdle" value="${druid.minIdle}" />
+		<property name="maxActive" value="${druid.maxActive}" />
+
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${druid.maxWait}" />
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+
+		<property name="validationQuery" value="${druid.validationQuery}" />
+		<property name="testWhileIdle" value="${druid.testWhileIdle}" />
+		<property name="testOnBorrow" value="${druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${druid.testOnReturn}" />
+
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
+
+		<!-- 配置监控统计拦截的filters,wall:防御SQL注入攻击 stat:监控-->
+		<property name="filters" value="${druid.filters}" />
+	</bean>
+
+
+	<!-- mybatis文件配置，扫描所有mapper文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="mapperLocations" value="classpath*:com/beisi/**/mapper/*.xml" />
+		<!-- mybatis配置文件路径 -->
+		<property name="configLocation" value="classpath:config-mybatis.xml" />
+	</bean>
+
+
+	<!-- spring与mybatis整合配置，扫描所有dao -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.beisi.module.**.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
+
+
+	<!-- 对dataSource 数据源进行事务管理，声明式事务（以方法为单位，进行事务控制；抛出异常，事务回滚） -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	
+	<!-- 事务： http://blog.csdn.net/zhaofuwu/article/details/52432883 -->
+
+	<!-- Spring事务类型详解： 
+	
+		PROPAGATION_REQUIRED 支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。 
+		PROPAGATION_SUPPORTS 支持当前事务，如果当前没有事务，就以非事务方式执行。 
+		PROPAGATION_MANDATORY 支持当前事务，如果当前没有事务，就抛出异常。 
+		PROPAGATION_REQUIRES_NEW 新建事务，如果当前存在事务，把当前事务挂起。 
+		PROPAGATION_NOT_SUPPORTED  以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。 
+		PROPAGATION_NEVER 以非事务方式执行，如果当前存在事务，则抛出异常。 
+		PROPAGATION_NESTED 如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则进行与PROPAGATION_REQUIRED类似的操作。 
+	
+	-->
+	
+	<!-- 1、编程式事务  启用对事务注解的支持-->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+	<!-- 2、 声明式事务-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- 定义事务传播属性 -->
+		<tx:attributes>
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="set*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="list*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="count*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="*"/> <!-- 其他方法默认读写 -->
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 配置事务切面 (aop) -->
+	<!-- http://www.cnblogs.com/rainy-shurun/p/5195439.html 
+		举例说明: 
+		
+		任意公共方法的执行： execution(public * *(..)) 
+		任何一个以“set”开始的方法的执行： execution(* set*(..)) 
+		AccountService 接口的任意方法的执行： execution(* com.xyz.service.AccountService.*(..)) 
+		定义在service包里的任意方法的执行： execution(* com.xyz.service.*.*(..)) 
+		定义在service包和所有子包里的任意类的任意方法的执行： execution(* com.xyz.service..*.*(..)) 
+		定义在pointcutexp包和所有子包里的JoinPointObjP2类的任意方法的执行： execution(* com.test.spring.aop.pointcutexp..JoinPointObjP2.*(..))") 
+		
+		最靠近(..)的为方法名,靠近.*(..))的为类名或者接口名,如上例的JoinPointObjP2.*(..)) 
+		
+	-->
+
+	<aop:config>
+		<aop:pointcut id="serviceMethods" expression="execution(* com.beisi..service..*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
+	</aop:config>
+	
+	
+</beans>

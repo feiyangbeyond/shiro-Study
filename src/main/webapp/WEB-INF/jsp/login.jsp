@@ -1,143 +1,120 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
-<html lang="zh-CN">
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+	response.setHeader("Pragma", "No-cache");
+	response.setHeader("Cache-Control", "no-cache");
+	response.setDateHeader("Expires", 0);
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+	String version = "0.0.1";
+%>
+<html>
 <head>
-    <meta charset="utf-8">
-    <!-- 显示地声明如果用ie浏览器的化，要用最新的版本的视图引擎来渲染页面 -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>启航课堂首页</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/lib/bootstrap/css/bootstrap.css">
-    <!--[if lt IE 9]>
-      <script src="${pageContext.request.contextPath}/static/lib/html5shiv/html5shiv.min.js"></script>
-      <script src="${pageContext.request.contextPath}/static/lib/respond/respond.min.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/font/iconfont.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/main.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/login.css">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tell the browser to be responsive to screen width -->
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	
+<base href="<%=basePath%>">
+<title>登录界面</title>
+
+<!-- Bootstrap 3.3.7 -->
+<link rel="stylesheet" href="<%=basePath%>static/css/bootstrap.min.css?ver=<%=version%>">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="<%=basePath%>static/css/font-awesome.min.css?ver=<%=version%>">
+<link rel="stylesheet" href="<%=basePath%>static/alifonts/iconfont.css?ver=<%=version%>">
+<!-- Theme style -->
+<link rel="stylesheet" href="<%=basePath%>static/css/AdminLTE.min.css?ver=<%=version%>">
+<link rel="stylesheet" href="<%=basePath%>static/css/_all-skins.min.css?ver=<%=version%>">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="<%=basePath%>static/plugins/iCheck/all.css?ver=<%=version%>">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script type="text/javascript">
+		var basePath = "<%=basePath%>";
+</script>
+<!-- 避免页面嵌套 -->
+<script>  
+	if(self!=top){top.location.href=self.location.href;}
+</script>  
 </head>
 
-<body>
+<body class="hold-transition login-page">
 	<input id="uuidsalt" type="hidden" value="${uuidsalt}">
-    <nav id="main_nav" class="navbar navbar-default navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#qh_navbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="#" class="navbar-brand"><i class="iconfont icon-jinxiaocun1"></i>进销系统</a>
-            </div>
-            <div id="qh_navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="">首页</a></li>
-                    <li><a href="">全部课程</a></li>
-                    <li><a href="">问题讨论</a></li>
-                    <li><a href="">学习路线</a></li>
-                    <li><a href="">资料下载</a></li>
-                </ul>
-                <div class="navbar-form navbar-left hidden-sm">
-                    <form accept="#" method="get">
-                        <div class="input-group">
-                            <input type="text" name="search_str" class="form-control" placeholder="课程名称..." />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary"><span class="iconfont icon-fangdajing"></span></button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-                <ul id="loginreg" class="nav navbar-nav navbar-right">
-                    <li><a href=""><span style="color:#337ab7; font-weight: bolder;" class="iconfont icon-denglu1"></span> 登录</a></li>
-                    <li><a href=""><span style="color:#337ab7;"  class="iconfont icon-zhuce"></span> 注册</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div id="loginhtml" class="container">
-        <div class="row">
-            <div class="col-md-7 col-sm-6 col-xs-5"></div>
-            <div class="col-md-10  col-sm-12 col-xs-14 login-col">
-                <ul class="nav nav-tabs">
-                    <li class="col-xs-12 active"><a href="#loginform" data-toggle="tab">登录账号</a></li>
-                    <li class="col-xs-12"><a data-toggle="tab" href="#regform">注册账号</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div id="loginform" class="tab-pane fade in active">
-                        <form action="${pageContext.request.contextPath}/login.html" method="post" onsubmit="return checkForm()">
-                            <div class="form-group">
-                                <label>账号:</label>
-                                <input type="text" name="userInfo" class="form-control" placeholder="邮箱/手机/用户名">
-                            </div>
-                            <div class="form-group">
-                                <label>密码:</label>
-                                <input type="password" id="pwd" name="password" class="form-control" placeholder="密码">
-                            </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="remeberme">10天内自动登录</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" class="form-control btn btn-primary" value="登录">
-                            </div>
-                            <div class="form-group">
-                                <p><a href="#">找回密码</a> | 还没有账号? <a href="#">注册账号</a></p>
-                                <p style="text-align: right;">使用第三账号登录:
-                                </p>
-                                <p style="text-align: right;">
-                                    <a href="#" style="text-decoration: none;"><span style="font-size: 30px;" class="iconfont icon-weixin"></span></a>
-                                    <a href="#" style="text-decoration: none;"><span style="font-size: 30px;" class="iconfont icon-hicon1"></span></a>
-                                </p>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="regform" class="tab-pane fade">
-                        <form action="#" method="post">
-                            <div class="form-group">
-                                <label>手机:</label>
-                                <input type="text" name="username" class="form-control" placeholder="常用的手机号码">
-                            </div>
-                            <div class="form-group">
-                                <label>用户名:</label>
-                                <input type="text" name="username" class="form-control" placeholder="用户名">
-                            </div>
-                            <div class="form-group">
-                                <label>密码:</label>
-                                <input type="password" name="password" class="form-control" placeholder="密码">
-                            </div>
-                            <div class="form-group">
-                                <label>手机验证码:</label>
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <input type="text" name="phoneCode" class="form-control" placeholder="验证码">
-                                    </div>
-                                    <div class="col-xs-12">
-                                        <input value="点击获取验证码" type="button" name="phoneCode" class="form-control btn btn-default">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group" style="margin-top:30px; margin-bottom: 20px;">
-                                <input type="submit" class="form-control btn btn-primary" value="登录">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-7  col-sm-6 col-xs-5"></div>
-        </div>
-    </div>
-    <div class="footer hidden-xs">
-        <div class="footericon"><span class="iconfont icon-kecheng"></span></div>
-        <p class="cr">Copyright © 2018 qihangzaixian. All Rights Reserved.</p>
-        <p class="cr">启航在线课程 版权所有 | <a href="#">工具下载</a> | <a href="#">资料下载</a> | <a href="#">视频下载</a> | <a href="#">问题反馈</a> | <a href="#">帮助</a></p>
-    </div>
-    <script src="${pageContext.request.contextPath}/static/lib/jquery/jquery.min.js"></script>
-    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <script src="${pageContext.request.contextPath}/static/lib/bootstrap/js/bootstrap.min.js"></script>    
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/lib/md5/md5a.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/static/lib/aes/aes.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/static/lib/aes/pad-zeropadding-min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/login/login.js"></script>
-</body>
+	<div class="login-box">
+		<div class="login-logo">
+			<a href="sys/login"><b>!</b>管理系统<b>!</b></a>
+		</div>
+		<!-- /.login-logo -->
+		<div class="login-box-body">
+			<p class="login-box-msg">登录后台</p>
 
+				<div class="form-group has-feedback">
+					<input type="text" class="form-control" placeholder="账号" id="userName"><!-- name="username" -->
+					<span class="glyphicon glyphicon-envelope form-control-feedback" ></span>
+				</div>
+				<div class="form-group has-feedback">
+					<input type="password" class="form-control" placeholder="密码"  id="password" >
+					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+				</div>
+				<div class="row">
+					<div class="col-xs-8">
+						<div class="checkbox icheck">
+							<label>
+								<input type="checkbox" class="minimal" id="rememberMe" > 记住我
+							</label>
+						</div>
+					</div>
+					<!-- /.col -->
+					<div class="col-xs-4">
+						<button id="loginBtn" class="btn btn-primary btn-block btn-flat">登录</button>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- 提示语句-->
+				<div class="form-group has-error">
+					<span id="errMsg" class="help-block"></span>
+				</div>
+ 				
+			
+			<!--<a href="#">忘记密码</a>&nbsp&nbsp&nbsp-->
+			<!--<a href="register.html" class="text-center">注册</a>-->
+
+		</div>
+		<!-- /.login-box-body -->
+	</div>
+	<!-- /.login-box -->
+
+	<!-- jQuery 3 -->
+	<script type="text/javascript" src="<%=basePath%>static/libs/jquery.min.js?ver=<%=version%>"></script>
+	<!-- Bootstrap 3.3.7 -->
+	<script type="text/javascript" src="<%=basePath%>static/libs/bootstrap.min.js?ver=<%=version%>"></script>
+	<!-- iCheck -->
+	<script type="text/javascript" src="<%=basePath%>static/plugins/iCheck/icheck.min.js?ver=<%=version%>"></script>
+	<script>
+    //iCheck for checkbox and radio inputs
+	    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+	      checkboxClass: 'icheckbox_minimal-blue',
+	      radioClass   : 'iradio_minimal-blue'
+	    })
+	</script>
+	<!-- layer -->
+	<script type="text/javascript" src="<%=basePath%>static/plugins/layer/layer.js?ver=<%=version%>"></script>
+	<script type="text/javascript" src="<%=basePath%>static/plugins/layer/layerTool.js?ver=<%=version%>"></script>
+	<script type="text/javascript" src="<%=basePath%>static/libs/md5/md5a.js?ver=<%=version%>"></script>
+	<script type="text/javascript" src="<%=basePath%>static/libs/aes/aes.js?ver=<%=version%>"></script>
+	<script type="text/javascript" src="<%=basePath%>static/libs/aes/pad-zeropadding-min.js?ver=<%=version%>"></script>
+	<script type="text/javascript" src="<%=basePath%>static/js/login.js?ver=<%=version%>"></script>
+	
+</body>
 </html>

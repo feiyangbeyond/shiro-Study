@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beisi.module.job.dao.ScheduleJobLogDao">
+	<resultMap type="com.beisi.module.job.entity.ScheduleJobLog" id="ScheduleJobLogMap">
+		<result property="logId" column="LOG_ID" />
+		<result property="jobId" column="JOB_ID" />
+		<result property="beanName" column="BEAN_NAME" />
+		<result property="methodName" column="METHOD_NAME" />
+		<result property="theParams" column="THE_PARAMS" />
+		<result property="jobStatus" column="JOB_STATUS" />
+		<result property="errorMsg" column="ERROR_MSG" />
+		<result property="theTimes" column="THE_TIMES" />
+		<result property="createTime" column="CREATE_TIME"/>
+	</resultMap>
+
+
+	<select id="getByJobLogId" resultMap="ScheduleJobLogMap" >
+		select * from t_schedule_job_log where LOG_ID = #{logId}
+	</select> 
+
+	<select id="listJobLog" resultMap="ScheduleJobLogMap" >
+		select * from t_schedule_job_log 
+		<where>
+			<if test="jobId != null and jobId.trim() != ''">
+				and JOB_ID = #{jobId}
+			</if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() !=''">
+				ORDER BY ${sidx} ${order}
+			</when>
+			<otherwise>
+				ORDER BY CREATE_TIME desc 
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null ">
+		limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="countJobLog" resultType="int">
+		select count(*) from t_schedule_job_log 
+		<where>
+			<if test="jobId != null">
+				and JOB_ID = #{jobId}
+			</if>
+		</where>
+	</select>
+	 
+	<insert id="saveJobLog" parameterType="com.beisi.module.job.entity.ScheduleJobLog">
+		insert into t_schedule_job_log
+		(
+			LOG_ID,
+			JOB_ID,
+			BEAN_NAME,
+			METHOD_NAME,
+			THE_PARAMS,
+			JOB_STATUS,
+			ERROR_MSG,
+			THE_TIMES,
+			CREATE_TIME
+		)
+		values
+		(
+			#{logId},
+			#{jobId}, 
+			#{beanName}, 
+			#{methodName}, 
+			#{theParams}, 
+			#{jobStatus}, 
+			#{errorMsg}, 
+			#{theTimes}, 
+			#{createTime}
+		)
+	</insert>
+	
+</mapper>

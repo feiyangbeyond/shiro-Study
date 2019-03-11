@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+  <Configuration status="OFF" monitorInterval="1800">
+    
+      <properties>  
+      	<!-- log打印到本地的路径 -->
+          <property name="LOG_HOME">D:/log4j2/mybatis/genertor/logs/</property>
+          <property name="ERROR_LOG_FILE_NAME">error</property>
+      </properties>  
+      <Appenders>  
+      	<!-- 控制台打印日志 -->
+          <Console name="Console" target="SYSTEM_OUT">  
+              <!-- <PatternLayout pattern="%d %-5p (%F:%L) - %m%n" />  -->
+              <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p - %F:%L - %m%n" />   
+          </Console>  
+    	<!-- 日志信息输出到文件配置 -->
+          <RollingRandomAccessFile name="ErrorLog"  
+                                   fileName="${LOG_HOME}/${ERROR_LOG_FILE_NAME}.log"  
+                                   filePattern="${LOG_HOME}/${ERROR_LOG_FILE_NAME}.log.%d{yyyy-MM-dd}.gz">  
+              <PatternLayout  
+                      pattern="%d %-5p (%F:%L) - %m%n"/>  
+              <Policies>  
+              	  <!-- TimeBasedTriggeringPolicy指定的size是1，结合起来就是1天生成一个新文件。如果filePattern改成%d{yyyy-MM-dd HH}.gz,此时最小粒度为小时，则每一个小时生成一个文件。 -->
+                  <TimeBasedTriggeringPolicy/>  
+                  <!--  指定当文件体积大于size指定的值时，触发Rolling -->
+                  <SizeBasedTriggeringPolicy size="100 MB"/>  
+              </Policies>
+              <!-- 指定最多保存的文件个数 -->  
+              <DefaultRolloverStrategy max="20"/>  
+          </RollingRandomAccessFile>  
+          <param name="Encoding" value="UTF-8" />
+      </Appenders>  
+    
+      <Loggers>  
+          <!-- 3rdparty Loggers -->  
+          <logger name="org.springframework.core" level="info">  
+          </logger>  
+          <logger name="org.springframework.beans" level="info">  
+          </logger>  
+          <logger name="org.springframework.context" level="info">  
+          </logger>  
+          <logger name="org.springframework.web" level="info">  
+          </logger>  
+          <logger name="org.springframework.test.context.junit4.SpringJUnit4ClassRunner" level="info">  
+          </logger>  
+          <!-- 下面的logger需要修改为你的项目根路径，如com.sd -->
+          <logger name="com.beisi" level="debug" includeLocation="true" additivity="false">
+              <appender-ref ref="ErrorLog"/>  
+              <appender-ref ref="Console"/>  
+          </logger>  
+            <!-- 将druid连接池的sql语句打印到日志文件中 -->
+        <logger name="druid.sql.Statement" level="debug" additivity="false">
+          <appender-ref ref="Console"/>
+          <appender-ref ref="RollingFileName"/>
+        </logger>
+          <root level="info" includeLocation="true">
+              <appender-ref ref="ErrorLog"/>
+              <appender-ref ref="Console"/>  
+          </root>  
+      </Loggers>  
+  </Configuration>  

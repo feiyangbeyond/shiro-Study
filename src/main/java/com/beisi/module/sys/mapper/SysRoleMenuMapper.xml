@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beisi.module.sys.dao.SysRoleMenuDao">
+	<resultMap type="com.beisi.module.sys.entity.SysRoleMenu" id="SysRoleMenuMap">
+		<result property="rowId" column="ROW_ID" />
+		<result property="roleId" column="ROLE_ID" />
+		<result property="permissionsId" column="PERMISSIONS_ID" />
+		<result property="createUser" column="CREATE_USER" />
+		<result property="createTime" column="CREATE_TIME"/>
+		<result property="updateUser" column="UPDATE_USER"/>
+		<result property="updateTime" column="UPDATE_TIME"/>
+	</resultMap>
+
+	 <!-- 根据角色ID，获取权限ID列表 -->
+	<select id="listRolePermissionsId" resultType="String">
+		select PERMISSIONS_ID from t_sys_role_menu where ROLE_ID = #{roleId}
+	</select>
+	
+	<!-- 根据角色ID，获取菜单ID列表 -->
+	<select id="listRoleMenuId" resultType="String">
+		select
+			bb.MENU_ID
+		from
+			t_sys_role_menu as aa
+		left join t_sys_menu as bb on aa.PERMISSIONS_ID = bb.PERMISSIONS_ID
+		where aa.ROLE_ID = #{roleId}
+	</select>
+	
+	<!-- 删除角色菜单关系 -->
+	<delete id="deleteRoleMenu">
+		delete from t_sys_role_menu where ROLE_ID = #{roleId}
+	</delete>
+
+	<!-- 保存 -->
+	<insert id="saveRoleMenu" parameterType="com.beisi.module.sys.entity.SysRoleMenu">
+		insert into t_sys_role_menu
+		(
+			ROW_ID,ROLE_ID,PERMISSIONS_ID,CREATE_USER,CREATE_TIME
+		)
+		values
+		(
+			#{rowId},#{roleId},#{permissionsId},#{createUser},#{createTime}
+		)
+<!-- 		<foreach collection="menuIdList" item="item" separator=",">
+		(
+			#{roleId},#{item}
+		)
+		</foreach> -->
+	</insert>
+
+</mapper>

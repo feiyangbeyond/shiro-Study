@@ -1,0 +1,20 @@
+.ui-jqgrid tr.jqgrow td {
+	height: 40px;
+}
+
+.ui-jqgrid tr.ui-jqgrid-labels {
+	height: 36px;
+	background-color: #EEEEEE;
+}
+
+.ui-jqgrid.ui-jqgrid-bootstrap {
+	border-radius: 0px;
+}
+
+.ui-jqgrid.ui-jqgrid-bootstrap .ui-jqgrid-hdiv {
+	background-color: #FFFFFF;
+}
+
+.ui-jqgrid.ui-jqgrid-bootstrap>.ui-jqgrid-view {
+	font-size: 14px;
+}

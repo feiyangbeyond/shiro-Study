@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beisi.module.sys.dao.SysRoleDao">
+	<resultMap type="com.beisi.module.sys.entity.SysRole" id="SysRoleMap">
+		<result property="roleId" column="ROLE_ID" />
+		<result property="roleName" column="ROLE_NAME" />
+		<result property="roleRemark" column="ROLE_REMARK"/>
+		<result property="createUser" column="CREATE_USER" />
+		<result property="createTime" column="CREATE_TIME"/>
+		<result property="updateUser" column="UPDATE_USER"/>
+		<result property="updateTime" column="UPDATE_TIME"/>
+	</resultMap>
+	
+	<!-- 查询用户创建的角色ID列表 -->
+	<select id="listRoleId" resultType="String">
+		SELECT
+			ROLE_ID
+		FROM
+			t_sys_role
+		WHERE
+			CREATE_USER = #{createUser} 
+	</select>
+	
+	<!-- 根据角色名获取角色条数 -->
+	<select id="getCountByRoleName" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			t_sys_role
+		WHERE
+			ROLE_NAME = #{roleName}
+	</select>
+	
+	<!-- 根据角色ID获取角色信息 -->
+	<select id="getByRoleId" resultMap="SysRoleMap">
+		select * from t_sys_role where ROLE_ID = #{roleId}
+	</select>
+	
+	<!--  获取角色列表 -->
+	<select id="listRole" resultMap="SysRoleMap">
+		SELECT
+		aa.ROLE_ID AS ROLE_ID,
+		aa.ROLE_NAME AS ROLE_NAME,
+		aa.ROLE_REMARK AS ROLE_REMARK,
+		bb.C_USR_REAL_NAME AS CREATE_USER,
+		aa.CREATE_TIME AS CREATE_TIME,
+		cc.C_USR_REAL_NAME AS UPDATE_USER,
+		aa.UPDATE_TIME AS UPDATE_TIME
+		FROM
+			t_sys_role AS aa
+		LEFT JOIN t_sys_user AS bb ON aa.CREATE_USER = bb.C_USR_ID
+		LEFT JOIN t_sys_user AS cc ON aa.UPDATE_USER = bb.C_USR_ID
+		<where>
+			<if test="searchName != null and searchName.trim() != ''">
+				and AA.ROLE_NAME like concat('%',#{searchName},'%') 
+			</if>
+			<if test="createUser != null">
+				and AA.CREATE_USER = #{createUser} 
+			</if>
+		</where>
+		GROUP BY AA.ROLE_ID 
+		<choose>
+			<when test="sidx != null and sidx.trim() !=''">
+				ORDER BY AA.${sidx} ${order}
+			</when>
+			<otherwise>
+				ORDER BY AA.CREATE_TIME asc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 角色总数 -->
+	<select id="countRole" resultType="int">
+		select count(*) from t_sys_role
+		<where>
+			<if test="roleName != null and roleName.trim() !=''">
+				and ROLE_NAME like concat('%',#{roleName},'%')
+			</if>
+			<if test="createUser !=null">
+				and CREATE_USER = #{createUser}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 保存角色 -->
+	<!--  useGeneratedKeys="true" keyProperty="roleId" 自增则需要获取ID-->
+	<insert id="saveRole" parameterType="com.beisi.module.sys.entity.SysRole">
+		insert into t_sys_role
+		(
+			ROLE_ID, 
+			ROLE_NAME, 
+			ROLE_REMARK,
+			CREATE_USER,
+			CREATE_TIME
+		)
+		values
+		(
+			#{roleId}, 
+			#{roleName}, 
+			#{roleRemark},
+			#{createUser},
+			#{createTime}
+		)
+	</insert>
+	
+	<!-- 更新角色 -->
+	<update id="updateRole" parameterType="com.beisi.module.sys.entity.SysRole">
+		update t_sys_role 
+		<set> 
+			<if test="roleName != null">ROLE_NAME = #{roleName},</if>
+			<if test="roleRemark != null">ROLE_REMARK = #{roleRemark},</if>
+			<if test="updateUser != null">UPDATE_USER = #{updateUser},</if>
+			<if test="updateTime != null">UPDATE_TIME = #{updateTime}</if>
+		</set>
+		where ROLE_ID = #{roleId}
+	</update>
+	
+	<!-- 批量删除角色 -->
+	<delete id="deleteBatchByRoleIds">
+		delete from t_sys_role where ROLE_ID in 
+		<foreach item="roleId" collection="array" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+		;
+		delete from t_sys_role_menu where ROLE_ID in 
+		<foreach item="roleId" collection="array" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+		;
+		delete from t_sys_user_role where ROLE_ID in 
+		<foreach item="roleId" collection="array" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+	</delete>
+	
+</mapper>

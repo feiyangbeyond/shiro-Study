@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beisi.module.job.dao.ScheduleJobListDao">
+	<resultMap type="com.beisi.module.job.entity.ScheduleJobList" id="ScheduleJobListMap">
+		<result property="jobId" column="JOB_ID" />
+		<result property="jobNum" column="JOB_NUM" />
+		<result property="beanName" column="BEAN_NAME" />
+		<result property="methodName" column="METHOD_NAME" />
+		<result property="theParams" column="THE_PARAMS" />
+		<result property="cronExpression" column="CRON_EXPRESSION" />
+		<result property="jobStatus" column="JOB_STATUS" />
+		<result property="jobRemark" column="JOB_REMARK" />
+		<result property="createUser" column="CREATE_USER" />
+		<result property="createTime" column="CREATE_TIME"/>
+		<result property="updateUser" column="UPDATE_USER"/>
+		<result property="updateTime" column="UPDATE_TIME"/>
+	</resultMap>
+
+	<!-- 查询单个任务信息 -->
+	<select id="getByJobId" resultMap="ScheduleJobListMap">
+		select * from t_schedule_job_list
+		where JOB_ID = #{jobId}
+	</select>
+
+	<!-- 查询任务列表 -->
+	<select id="listJob" resultMap="ScheduleJobListMap">
+		select * from t_schedule_job_list
+		<where>
+			<if test="searchName != null and searchName.trim() != ''">
+				BEAN_NAME like concat('%', #{searchName}, '%')
+			</if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() !=''">
+				ORDER BY ${sidx} ${order}
+			</when>
+			<otherwise>
+				ORDER BY JOB_NUM ASC
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null ">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<!-- 查询总条数 -->
+	<select id="countJob" resultType="int">
+		select count(*) from t_schedule_job_list
+		<where>
+			<if test="beanName != null and beanName.trim() != ''">
+				BEAN_NAME like concat('%', #{beanName}, '%')
+			</if>
+		</where>
+	</select>
+	
+	<!-- 获取当前最大任务编号 -->
+	<select id="getMaxNumNow" resultType="int">
+		SELECT MAX(JOB_NUM) FROM t_schedule_job_list
+	</select>
+	
+	<!-- 新增任务 -->
+	<!-- useGeneratedKeys="true" keyProperty="jobId" -->
+	<insert id="saveJob" parameterType="com.beisi.module.job.entity.ScheduleJobList">
+		insert into t_schedule_job_list
+		(
+			JOB_ID,
+			JOB_NUM,
+			BEAN_NAME,
+			METHOD_NAME,
+			THE_PARAMS,
+			CRON_EXPRESSION,
+			JOB_STATUS,
+			JOB_REMARK,
+			CREATE_USER,
+			CREATE_TIME
+		)
+		values
+		(
+			#{jobId},
+			#{jobNum},
+			#{beanName},
+			#{methodName},
+			#{theParams},
+			#{cronExpression},
+			#{jobStatus},
+			#{jobRemark},
+			#{createUser},
+			#{createTime}
+		)
+	</insert>
+	
+	<!-- 修改任务信息 -->
+	<update id="updateJob" parameterType="com.beisi.module.job.entity.ScheduleJobList">
+		update t_schedule_job_list
+		<set>
+			<!-- <if test="jobNum != null">JOB_NUM = #{jobNum},</if> -->
+			<if test="beanName != null">BEAN_NAME = #{beanName},</if>
+			<if test="methodName != null">METHOD_NAME = #{methodName},</if>
+			<if test="theParams != null">THE_PARAMS = #{theParams},</if>
+			<if test="cronExpression != null">CRON_EXPRESSION = #{cronExpression}, </if>
+			<if test="jobStatus != null">JOB_STATUS = #{jobStatus},</if>
+			<if test="jobRemark != null">JOB_REMARK = #{jobRemark},</if>
+			<if test="updateUser != null">UPDATE_USER = #{updateUser},</if>
+			<if test="updateTime != null">UPDATE_TIME = #{updateTime}</if>
+		</set>
+		where JOB_ID = #{jobId}
+	</update>
+
+	<!-- 批量开启或关闭任务 -->
+	<update id="updateBatchJob">
+		update t_schedule_job_list set JOB_STATUS = #{jobStatus},UPDATE_USER = #{updateUser},
+		UPDATE_TIME = #{updateTime} 
+		where JOB_ID in
+		<foreach item="jobId" collection="jobIds" open="(" separator="," close=")">
+			#{jobId}
+		</foreach>
+	</update>
+
+	<!-- 删除任务 -->
+	<delete id="deleteBatchByJobIds">
+		delete from t_schedule_job_list where JOB_ID in
+		<foreach item="jobId" collection="array" open="(" separator="," close=")">
+			#{jobId}
+		</foreach>
+	</delete>
+</mapper>

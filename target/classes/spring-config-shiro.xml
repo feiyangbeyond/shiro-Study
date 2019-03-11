@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd ">
+
+	<description>apache shiro配置</description>
+
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- Shiro的核心安全接口,这个属性是必须的 -->
+		<property name="securityManager" ref="securityManager" />
+		<!-- 要求登录时的链接，非必须的属性，默认会自动寻找Web工程根目录下的"/login.jsp"页面 -->
+		<property name="loginUrl" value="/sys/login" />
+		<!-- 登录成功后跳转的地址 -->
+		<!-- <property name="successUrl" value="/sys/index" /> -->
+		<!-- 用户访问未对其授权的资源时，显示的链接 -->
+		<!-- <property name="unauthorizedUrl" value="/error/unauthor" /> -->
+		<!-- 'filters'属性不是必需的，因为任何声明javax.servlet.Filter的bean都将通过其链接定义的beanName自动获取并可用，但是可以在此处执行实例覆盖或定义别名-->
+		<!-- 
+			<property name="filters">
+        		<util:map>
+            		<entry key="anAlias" value-ref="someFilter"/>
+        		</util:map>
+    		</property> 
+    	-->
+		<!-- 自定义权限设置，进行url过滤 -->
+		<property name="filterChainDefinitions">
+		<!-- 参考： http://www.cppblog.com/guojingjia2006/archive/2014/05/14/206956.html -->
+		<!-- 使用的过滤链方式，url 匹配成功则不再继续往下匹配，注意url配置顺序 -->
+			<value>
+			    <!-- 首页允许访问 -->
+				<!-- / = anon -->
+				/index = anon
+				<!-- 允许静态资源访问 ，** 任意层次的全匹配-->
+				/static/** = anon
+				<!-- 登录界面允许访问 -->
+				/sys/login = anon
+				<!-- 测试方法允许访问 -->
+				/modules/** = anon
+				/** = user
+				<!-- 后台所有请求需要验证 -->
+				/sys/**=authc
+			</value> 
+		</property>
+	</bean>
+
+	<!-- 自动获取并提供给'filterChainDefinitions'属性 -->
+	<!-- <bean id="someFilter" class="..."/> -->
+
+	<!-- 自定义Realm 继承自Realm -->
+<!--!!!!! 	<bean id="sysRealm" class="com.beisi.module.sys.shiro.SysRealm" ></bean> -->
+	<!-- shiro配置密码比对计算算法 -->
+	<bean id="sysRealm"
+		class="com.beisi.module.sys.shiro.SysRealm">
+		<property name="credentialsMatcher">
+			<!-- <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher"> 
+				使用shiro的验证机制 使用加密算法名 <property name="hashAlgorithmName" value="MD5"></property> 
+				加密次数 <property name="hashIterations" value="1024"></property> 加密结果设为16进制 
+				<property name="storedCredentialsHexEncoded" value="true"></property> </bean> -->
+			<bean class="com.beisi.module.sys.shiro.SysCredentialsMatcher"><!-- 使用自定义验证机制 -->
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- Cookie的操作模版 -->
+	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+	    <constructor-arg value="sid"/>  
+	    <property name="httpOnly" value="true"/>
+	    <!-- 设置Cookie的过期时间，秒为单位，默认-1表示关闭浏览器时过期Cookie -->
+	    <property name="maxAge" value="-1"/>  
+	</bean>  
+	
+	 <!-- 记住我 -->
+	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+        <constructor-arg value="rememberMe" />  
+        <property name="httpOnly" value="true" />  
+        <property name="maxAge" value="#{7 * 24 * 60 * 60}" /><!-- 7天,使用 Spring EL -->
+    </bean>
+     
+    <!-- rememberMe管理器 ,cookie加密的密钥, 默认AES算法 密钥长度(128 256 512 位) -->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+    	<!-- 密钥需修改 -->
+    	<property name="cipherKey"  value="#{T(org.apache.shiro.codec.Base64).decode('WHlMIYjaAICdC4BmXL3DMg==')}" />
+        <property name="cookie" ref="rememberMeCookie" />
+    </bean>
+	
+	
+	
+	<!-- 用户授权信息Cache, 采用EhCache -->
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>
+    </bean>
+    
+    
+    <!-- 默认会话验证调度器,释放无用Session,若使用Quartz会话验证调度器,使用时需要导入shiro-quartz依赖-->
+	<bean id="sessionValidationScheduler"
+		class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+		<property name="sessionManager" ref="sessionManager" />
+		<!-- 设置调度时间间隔，单位毫秒，默认就是1小时 -->
+		<property name="interval" value="#{30 * 60 * 1000}" />
+	</bean>
+	
+ 	<!-- <bean id="sessionValidationScheduler"
+        class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+        设置调度时间间隔，单位毫秒
+        <property name="sessionValidationInterval" value="#{30 * 60 * 1000}"/>
+        随后还需要定义有一个会话管理器的程序类的引用
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean> -->
+
+    
+    <!-- 定义Session ID生成管理器 --> 
+	<bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator" />
+    <!-- 配置Session DAO的操作处理 -->
+	<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO"> 
+	    <!-- 设置Session缓存名字，默认shiro-activeSessionCache --> 
+	    <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/> 
+	    <!-- 定义该Session DAO操作中所使用的ID生成器 --> 
+	    <property name="sessionIdGenerator" ref="sessionIdGenerator"/> 
+	</bean>
+    
+    
+    <!-- 会话管理器 -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- 定义的是全局的session会话超时时间，此操作会覆盖web.xml文件中的超时时间配置 -->
+        <property name="globalSessionTimeout" value="#{30 * 60 * 1000}"/>
+        <!-- 删除所有无效的Session对象，此时的session被保存在了内存里面 -->
+        <property name="deleteInvalidSessions" value="true"/>
+        <!-- 定义要使用的无效的Session定时调度器 -->
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        <!-- 需要让此session可以使用该定时调度器进行检测 -->
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <!-- 去掉shiro登录时url里的JSESSIONID -->
+        <property name="sessionIdUrlRewritingEnabled" value="false"/>
+        <!-- 定义Session可以进行序列化的工具类 -->
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <!-- 将session的id设置到Cookie之中 -->
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        <!-- 定义sessionIdCookie模版可以进行操作的启用 -->
+        <property name="sessionIdCookieEnabled" value="true"/>
+    </bean> 
+    
+    
+    
+
+	<!-- Shiro安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		
+        <property name="cacheManager" ref="shiroEhcacheManager" />
+        <!--设置缓存管理器-->
+        <property name="rememberMeManager" ref="rememberMeManager" />
+        <!-- 注入session管理器 -->
+        <property name="sessionManager" ref="sessionManager" />
+        <!-- 多realm认证策略，必须放在多realm配置之前 -->
+		<property name="authenticator" ref="authenticator"></property>
+		<!--设置自定义realm  -->
+		<!-- <property name="realm" ref="sysRealm" /> -->
+		<property name="realms">
+            <list>
+                <ref bean="sysRealm"/>
+            </list>
+        </property>
+        
+        <!-- 默认情况下将使用servlet容器会话。 取消注释此行以使用shiro的本地会话（请参阅JavaDoc了解更多） --> 
+        <!-- <property name="sessionMode" value="native"/> -->
+	</bean>
+	
+	<!-- 设置多realm认证策略 -->
+ 	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+		<property name="authenticationStrategy">
+			<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
+		</property>
+		<!--  ###可以在这里注入多realm，但一般不放在此处，因为做授权时，会在核心组件中(securityManager)获取realms <property 
+			name="realms"> <list> <ref bean="shiroRealm"/> <ref bean="qQRealm"/> <ref 
+			bean="weixinRealm"/> </list> </property>###-->
+	</bean>
+
+	<!-- Shiro生命周期处理器 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+
+	<!-- 为Spring配置的bean启用Shiro注解(如@RequiresRoles，@RequiresPermissions)。 -->
+	<!-- 仅在lifecycleBeanProcessor运行后运行 -->
+	<!-- 需在SpringMvc中启用代理,不使用以下方式
+	
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor" >
+	</bean> -->
+		
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+</beans>

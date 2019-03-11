@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beisi.module.sys.dao.SysLogDao">
+	<resultMap type="com.beisi.module.sys.entity.SysLog" id="SysLogMap">
+		<result property="logId" column="LOG_ID" />
+		<result property="cUsrName" column="C_USR_NAME" />
+		<result property="cUsrOperation" column="C_USR_OPERATION" />
+		<result property="methodName" column="METHOD_NAME" />
+		<result property="theParams" column="THE_PARAMS" />
+		<result property="theTimes" column="THE_TIMES" />
+		<result property="theIp" column="THE_IP" />
+		<result property="createUser" column="CREATE_USER" />
+		<result property="createTime" column="CREATE_TIME"/>
+	</resultMap>
+
+	<select id="listLog" resultMap="SysLogMap">
+		select * from t_sys_log 
+		<where>
+			<if test="key != null and key.trim() != ''">
+				C_USR_NAME like concat('%',#{key},'%') or C_USR_OPERATION like concat('%',#{key},'%')
+			</if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() !=''">
+				ORDER BY ${sidx} ${order}
+			</when>
+			<otherwise>
+				ORDER BY CREATE_TIME desc 
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="countLog" resultType="int">
+		select count(*) from t_sys_log 
+		<where>
+			<if test="key != null and key.trim() != ''">
+				C_USR_NAME like concat('%',#{key},'%') or C_USR_OPERATION like concat('%',#{key},'%')
+			</if>
+		</where>
+	</select>
+	
+	 <!-- useGeneratedKeys="true" keyProperty="id" -->
+	<insert id="saveLog" parameterType="com.beisi.module.sys.entity.SysLog">
+		insert into t_sys_log
+		(
+			LOG_ID,
+			C_USR_NAME,
+			C_USR_OPERATION, 
+			METHOD_NAME, 
+			THE_PARAMS,
+			THE_TIMES,
+			THE_IP,
+			CREATE_USER,
+			CREATE_TIME
+		)
+		values
+		(
+			#{logId},
+			#{cUsrName},
+			#{cUsrOperation},
+			#{methodName},
+			#{theParams},
+			#{theTimes},
+			#{theIp},
+			#{createUser},
+			#{createTime}
+		)
+	</insert>
+
+</mapper>

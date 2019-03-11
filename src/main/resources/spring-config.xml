@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd ">
+
+
+
+	<!-- 启动@Schedule任务调度 -->
+	<task:annotation-driven />
+	<!-- 启用注解 -->
+	<context:annotation-config />
+	
+	<!-- 启用aop注解 -->
+	<aop:aspectj-autoproxy/>
+
+	<!-- 自动扫描组件，可以排除 @Controller组件，在SpringMVC配置中扫描 -->
+	<context:component-scan base-package="com.beisi"><!-- base-package 如果多个，用“,”分隔 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController" />
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+
+	<!-- 引入配置文件 -->
+	<!-- <context:property-placeholder location="classpath:conf.properties" 
+		ignore-resource-not-found="true" /> -->
+	<bean id="properyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- <property name="location" value="classpath:jdbc.properties" /> -->
+		<property name="locations">
+			<list>
+				<value>classpath:db.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+
+
+	<!-- 引入各配置模块 -->
+ 	<import resource="classpath:spring-config-template.xml" />
+	<import resource="classpath:spring-config-dataSource.xml" />
+ 	<import resource="classpath:spring-config-shiro.xml" />
+ 	<import resource="classpath:spring-config-scheduler.xml" />
+
+
+</beans>

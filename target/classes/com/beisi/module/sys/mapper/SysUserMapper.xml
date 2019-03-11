@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beisi.module.sys.dao.SysUserDao">
+	<resultMap type="com.beisi.module.sys.entity.SysUser" id="SysUserMap">
+		<result property="cUsrId" column="C_USR_ID" />
+		<result property="cUsrName" column="C_USR_NAME" />
+		<result property="cUsrPassword" column="C_USR_PASSWORD" />
+		<result property="cUsrRealName" column="C_USR_REAL_NAME" />
+		<result property="cUsrEmail" column="C_USR_EMAIL" />
+		<result property="cUsrPhone" column="C_USR_PHONE" />
+		<result property="cUsrStatus" column="C_USR_STATUS" />
+		<result property="lastLoginTime" column="LAST_LOGIN_TIME" />
+		<result property="expirationTime" column="EXPIRATION_TIME" />
+		<result property="createUser" column="CREATE_USER" />
+		<result property="createTime" column="CREATE_TIME"/>
+		<result property="updateUser" column="UPDATE_USER"/>
+		<result property="updateTime" column="UPDATE_TIME"/>
+	</resultMap>
+
+	<!-- 根据用户名获取用户信息 -->
+	<select id="getByUserName" resultMap="SysUserMap">
+		SELECT
+		*
+		FROM
+		t_sys_user
+		WHERE
+		C_USR_NAME = #{username}
+	</select>
+
+	<!-- 修改密码 -->
+	<update id="updatePassword" parameterType="map">
+		UPDATE t_sys_user
+		SET
+		C_USR_PASSWORD = #{newPassword},
+		UPDATE_USER = #{updateUser},
+		UPDATE_TIME = #{updateTime}
+		WHERE
+		C_USR_ID = #{cUsrId}
+		AND C_USR_PASSWORD = #{password}
+	</update>
+
+	<!-- 查询用户所有的权限 -->
+	<select id="listAllperms" resultType="String">
+		SELECT
+			m.MENU_PERMS
+		FROM
+			t_sys_user_role ur
+		LEFT JOIN t_sys_role_menu rm ON ur.ROLE_ID = rm.ROLE_ID
+		LEFT JOIN t_sys_menu m ON rm.PERMISSIONS_ID = m.PERMISSIONS_ID
+		WHERE
+			C_USR_ID = #{cUsrId}
+	</select>
+
+	<!-- 查询用户的所有菜单ID -->
+	<select id="listAllPrmissionsId" resultType="String">
+		SELECT
+			rm.PERMISSIONS_ID
+		FROM
+			t_sys_user_role ur
+		LEFT JOIN t_sys_role_menu rm ON ur.ROLE_ID = rm.ROLE_ID
+		WHERE
+			ur.C_USR_ID = #{cUsrId}
+	</select>
+
+	<!-- 保存用户 -->
+	<insert id="saveUser" parameterType="com.beisi.module.sys.entity.SysUser">
+		insert into t_sys_user
+		(
+			C_USR_ID, 
+			C_USR_NAME, 
+			C_USR_PASSWORD,
+			C_USR_REAL_NAME,
+			C_USR_EMAIL, 
+			C_USR_PHONE, 
+			C_USR_STATUS,
+			LAST_LOGIN_TIME,
+			EXPIRATION_TIME,
+			CREATE_USER,
+			CREATE_TIME
+		)
+		values
+		(
+			#{cUsrId}, 
+			#{cUsrName}, 
+			#{cUsrPassword},
+			#{cUsrRealName},
+			#{cUsrEmail}, 
+			#{cUsrPhone}, 
+			#{cUsrStatus}, 
+			#{lastLoginTime},
+			#{expirationTime},
+			#{createUser},
+			#{createTime}
+		)
+	</insert>
+
+	<!-- 批量删除用户 -->
+	<delete id="deleteBatchByUserIds">
+		delete from t_sys_user where C_USR_ID in
+		<foreach collection="array" item="cUsrId" open="(" separator="," close=")">
+			#{cUsrId}
+		</foreach>
+		;
+		delete from t_sys_user_role where C_USR_ID in
+		<foreach collection="array" item="cUsrId" open="(" separator="," close=")">
+			#{cUsrId}
+		</foreach>
+	</delete>
+
+	<!-- 更新用户信息 -->
+	<update id="updateUser" parameterType="com.beisi.module.sys.entity.SysUser">
+		update t_sys_user
+		<set>
+			<if test="cUsrName != null">C_USR_NAME = #{cUsrName},</if>
+			<if test="cUsrPassword != null">C_USR_PASSWORD = #{cUsrPassword},</if>
+			<if test="cUsrRealName != null">C_USR_REAL_NAME = #{cUsrRealName},</if>
+			<if test="cUsrEmail != null">C_USR_EMAIL = #{cUsrEmail},</if>
+			<if test="cUsrPhone != null">C_USR_PHONE = #{cUsrPhone},</if>
+			<if test="cUsrStatus != null">C_USR_STATUS = #{cUsrStatus},</if>
+			<if test="lastLoginTime != null">LAST_LOGIN_TIME = #{lastLoginTime},</if>
+			<if test="expirationTime != null">EXPIRATION_TIME = #{expirationTime},</if>
+			<if test="updateUser != null">UPDATE_USER = #{updateUser},</if>
+			<if test="updateTime != null">UPDATE_TIME = #{updateTime}</if>
+		</set>
+		where C_USR_ID = #{cUsrId}
+	</update>
+
+	<!-- 根据用户ID获取用户信息 -->
+	<select id="getByUserId" resultMap="SysUserMap">
+		SELECT
+			C_USR_ID, 
+			C_USR_NAME,
+			C_USR_REAL_NAME,
+			C_USR_EMAIL, 
+			C_USR_PHONE, 
+			EXPIRATION_TIME, 
+			C_USR_STATUS		
+		FROM
+			t_sys_user
+		WHERE
+			C_USR_ID = #{cUsrId}
+	</select>
+
+	<!-- 获取用户列表 -->
+	<select id="listUser" resultMap="SysUserMap">
+		SELECT 
+			AA.C_USR_ID AS C_USR_ID, 
+			AA.C_USR_NAME AS C_USR_NAME,
+			AA.C_USR_REAL_NAME AS C_USR_REAL_NAME,
+			AA.C_USR_EMAIL AS C_USR_EMAIL, 
+			AA.C_USR_PHONE AS C_USR_PHONE, 
+			AA.C_USR_STATUS AS C_USR_STATUS, 
+			AA.LAST_LOGIN_TIME AS LAST_LOGIN_TIME,
+			AA.EXPIRATION_TIME AS EXPIRATION_TIME,
+			BB.C_USR_REAL_NAME AS CREATE_USER,
+			AA.CREATE_TIME AS CREATE_TIME,
+			CC.C_USR_REAL_NAME AS UPDATE_USER,
+			AA.UPDATE_TIME AS UPDATE_TIME 
+		FROM t_sys_user as AA
+		LEFT JOIN t_sys_user AS BB ON AA.CREATE_USER = BB.C_USR_ID
+		LEFT JOIN t_sys_user AS CC ON AA.UPDATE_USER = CC.C_USR_ID
+		<where>
+			<if test="createUser != null">
+				AND AA.CREATE_USER = #{createUser}
+			</if>
+			<if test="searchName != null and searchName.trim()!=''">
+				AND AA.C_USR_REAL_NAME LIKE concat('%',#{searchName},'%')
+			</if>
+		</where>
+		GROUP BY AA.C_USR_ID 
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				ORDER BY AA.${sidx} ${order}
+			</when>
+			<otherwise>
+				ORDER BY AA.CREATE_TIME DESC
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<!-- 获取总用户数 -->
+	<select id="countUser" resultType="int">
+		select count(*) from t_sys_user
+		<where>
+			<if test="createUser != null">
+				AND CREATE_USER =#{createUser}
+			</if>
+			<if test="searchName != null and searchName.trim()!=''">
+				AND C_USR_REAL_NAME LIKE concat('%',#{searchName},'%')
+			</if>
+		</where>
+	</select>
+	
+</mapper>
