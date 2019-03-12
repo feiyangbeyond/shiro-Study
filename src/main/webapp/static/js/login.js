@@ -52,16 +52,17 @@ function login(){
 	var url = basePath+ "sys/login";
 	var userName = $("#userName").val().replace(/(^\s*)|(\s*$)/g, "");
 	var password = $("#password").val();
+	var captcha = $("#captcha").val();
 	var rememberMe = $('#rememberMe').prop('checked');
 	$.ajax({
 		type:"POST",
 		url:url,
-//		contentType : "application/json",
 		dataType: "json",
 		data: {
 			"userName":userName,
 			"password":password,
-			"rememberMe":rememberMe
+			"rememberMe":rememberMe,
+			"captcha":captcha
 		},
 		success: function(res) {
 			console.log(res);
@@ -122,6 +123,11 @@ function validator(){
 	
 	if (isBlank($("#password").val())) {
 		showMsg("密码不能为空");
+		return true;
+	}
+	
+	if (isBlank($("#captcha").val())) {
+		showMsg("验证码不能为空");
 		return true;
 	}
 	

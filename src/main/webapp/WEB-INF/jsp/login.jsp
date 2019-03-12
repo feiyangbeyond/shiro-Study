@@ -67,6 +67,14 @@
 					<input type="password" class="form-control" placeholder="密码"  id="password" >
 					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 				</div>
+				
+				<div class="form-group has-feedback">
+					<input type="text" class="form-control" placeholder="验证码"  id="captcha" >
+					 <img id="validateCodeImg" src="<%=basePath%>sys/validateCode" />&nbsp;&nbsp;
+					 <a href="#" onclick="javascript:reloadValidateCode();">看不清？</a>
+					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+				</div>
+				
 				<div class="row">
 					<div class="col-xs-8">
 						<div class="checkbox icheck">
