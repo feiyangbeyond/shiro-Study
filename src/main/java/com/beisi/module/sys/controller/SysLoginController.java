@@ -40,7 +40,6 @@ import com.beisi.module.sys.service.SysMenuService;
 
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.web.util.WebUtils;
 
 /**
  * 登录视图控制器
@@ -70,11 +69,12 @@ public class SysLoginController extends BaseController {
 		logger.info("----rememberMe = " + rememberMe);
 		Session session = curUser.getSession();
 		String code = (String) session.getAttribute("validateCode");//session中的验证码
-        if (StringUtils.isEmpty(captcha) || !StringUtils.equals(code,captcha.toLowerCase())) {
-        	logMsg = "验证码错误";
-			errMsg = "验证码错误！";
-			return Result.error(errMsg);
-        }
+//		开启验证码
+//        if (StringUtils.isEmpty(captcha) || !StringUtils.equals(code,captcha.toLowerCase())) {
+//        	logMsg = "验证码错误";
+//			errMsg = "验证码错误！";
+//			return Result.error(errMsg);
+//        }
 		if (curUser.isRemembered()) {
 			logger.info("rememberMe:" + "用户已经记住");
 			return Result.success();

@@ -9,6 +9,18 @@
 
 	<description>apache shiro配置</description>
 
+	<!--自定义filter实现同一个账户只能同时一个人在线，后者登录的踢出前面登录的用户-->
+    <bean id="kickoutSessionControlFilter" class="com.beisi.module.sys.shiro.KickoutSessionControlFilter">
+        <property name="cacheManager" ref="shiroEhcacheManager"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <!-- 是否踢出后来登录的，默认是false；即后者登录的用户踢出前者登录的用户 -->
+        <!-- 后者登录踢出前者登录:比如同一个账号：A电脑登录后，接着在B电脑登录，这时A电脑操作时会跳转登录页面 -->
+        <property name="kickoutAfter" value="false"/>
+        <!-- 同一个用户最大的会话数，默认1；比如2的意思是同一个用户允许最多同时两个人登录 -->
+        <property name="maxSession" value="1"/>
+        <property name="kickoutUrl" value="/sys/login"/>
+    </bean>
+    
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<!-- Shiro的核心安全接口,这个属性是必须的 -->
 		<property name="securityManager" ref="securityManager" />
@@ -26,6 +38,12 @@
         		</util:map>
     		</property> 
     	-->
+    	<property name="filters">
+        		<util:map>
+        			<!-- 自定义filter实现统一账户只能一个人在线使用，踢出其他用户 -->
+            		<entry key="kickout" value-ref="kickoutSessionControlFilter"/>
+        		</util:map>
+    	</property> 
 		<!-- 自定义权限设置，进行url过滤 -->
 		<property name="filterChainDefinitions">
 		<!-- 参考： http://www.cppblog.com/guojingjia2006/archive/2014/05/14/206956.html -->
@@ -42,9 +60,10 @@
 				/sys/login = anon
 				<!-- 测试方法允许访问 -->
 				/modules/** = anon
-				/** = user
-				<!-- 后台所有请求需要验证 -->
-				/sys/**=authc
+				
+				<!-- /** = user -->
+				<!-- 其他所有请求需要验证 -->
+				/**= kickout,authc
 			</value> 
 		</property>
 	</bean>
@@ -57,6 +76,7 @@
 	<!-- shiro配置密码比对计算算法 -->
 	<bean id="sysRealm"
 		class="com.beisi.module.sys.shiro.SysRealm">
+		<!-- 自定义验证机制 -->
 		<property name="credentialsMatcher">
 			<!-- <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher"> 
 				使用shiro的验证机制 使用加密算法名 <property name="hashAlgorithmName" value="MD5"></property> 

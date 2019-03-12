@@ -276,6 +276,7 @@
 		     <artifactId>shiro-quartz</artifactId>  
 		     <version>${shiro.version}</version>  
 		</dependency> -->
+			
 		
 		<!-- ==========================quartz============================ -->
 		
